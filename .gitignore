@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+build/
+dist/
+
+# Docker
+*.pid
+*.log
+db_data/
+.env
+.env.example
+
+# IDEs
+.vscode/
+.idea/
+*.swp
