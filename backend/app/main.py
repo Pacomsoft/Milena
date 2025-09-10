@@ -1,11 +1,19 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.exc import OperationalError
+from sqlalchemy.orm import Session
 import time
 
-from .db import SessionLocal, engine
+from app.db import *
+from app.models.Account import Account
+from app.api.api_v1.api import api_router
+
+
+# Crear tablas si no existen
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="SeiyaRPG - Backend (dev)")
+#app.include_router(auth_router)
+app.include_router(api_router, prefix="/api/v1")
 
 # CORS: en dev permitir localhost:3000 (React)
 app.add_middleware(
@@ -21,20 +29,12 @@ app.add_middleware(
 def health():
     return {"status": "ok"}
 
-# ejemplo de endpoint que usa DB session
-def get_db():
-    retries = 5
-    for i in range(retries):
-        try:
-            db = SessionLocal()
-            yield db
-            db.close()
-            break
-        except OperationalError:
-            if i < retries - 1:
-                time.sleep(2)
-            else:
-                raise
+
+# 🔹 Listar usuarios
+@app.get("/api/users")
+def list_users(db: Session = Depends(get_db)):
+    users = db.query(Account).all()
+    return [{"id": u.ac_key, "username": u.ac_username} for u in users]
 
 @app.get("/api/hello")
 def hello():

@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: rpg
+      MYSQL_DATABASE: SSRPG
       MYSQL_USER: rpg_user
       MYSQL_PASSWORD: rpg_pass
     ports:
@@ -17,26 +17,29 @@ services:
 
   backend:
     build: ./backend
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
     container_name: rpg_backend
     ports:
       - "8000:8000"
     volumes:
       - ./backend:/app
     environment:
-      - DATABASE_URL=mysql+pymysql://rpg_user:rpg_pass@db:3306/rpg
+      - DATABASE_URL=mysql+pymysql://rpg_user:rpg_pass@db:3306/SSRPG
     depends_on:
       - db
 
   frontend:
     build: ./frontend
+    command: npm start
     container_name: rpg_frontend
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - ./frontend:/app:cached
+      - /app/node_modules  # <--- importante, mantener node_modules dentro del contenedor
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
     depends_on:
       - backend
 

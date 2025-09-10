@@ -1,0 +1,293 @@
+body{
+    background: black;
+    background-image: url('../images/background.jpg');
+    /*padding-top: 50px;*/
+    color:#fefcff;
+    font-family: Reddit;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container-base
+{
+    margin: 1%; 
+    
+    background-color: #161616ad; 
+    background-repeat: no-repeat; 
+    box-shadow: 0px 1px 20px 11px rgb(255 193 7 / 48%); 
+    border-radius: 20px 20px 20px 20px; 
+    min-height:700px; 
+
+}
+
+.info-base 
+{
+width: auto;
+margin: auto;
+}
+
+@media (max-width: 991.98px) {
+  .horizontal-menu .bottom-navbar {
+    display: none;
+  }
+  .horizontal-menu .bottom-navbar.show {
+    display: block !important;
+  }
+}
+
+.collapse {
+  transition: none !important;
+}
+.collapsing {
+  transition: none !important;
+}
+
+
+.navbar-toggler .navbar-toggler-icon {
+  background-image: none;
+}
+
+.navbar-toggler .navbar-toggler-icon {
+  width: 1.5em;
+  height: 1.5em;
+  background-image: url("data:image/svg+xml;charset=utf8,<svg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'><path stroke='orange' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/></svg>");
+
+}
+.login-label
+{
+    color:#f4d322;
+    font-weight: bold;
+    font-family: Saintfont;
+    letter-spacing: 1px;
+}
+
+.text-toast{
+    font-family: 'Saintfont', sans-serif;
+}
+.barra-status
+{
+    color:white;
+    font-weight: bold;
+    font-family: Reddit;
+    font-family: 16px;
+}
+
+.value
+{
+    font-weight: bold;
+    color:#f4d322;
+}
+.login-input
+{
+    color: #fff !important;
+    background-color: RGBA(var(--bs-dark-rgb), var(--bs-bg-opacity, 1)) !important;
+}
+
+.dropdown-menu
+{
+    background-color: #10121a;
+    color:white!important;
+}
+
+a{
+    color: #fffff3;
+    text-decoration: none;
+    background-color: transparent;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #f4d322;
+}
+
+.horizontal-menu .navbar .navbar-content .navbar-nav .nav-item .nav-link {
+    color: white;
+    padding: 0;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Saintfont';
+}
+
+.horizontal-menu .navbar .navbar-content .navbar-nav .nav-item.nav-profile .dropdown-menu .dropdown-header .info .name {
+    font-size: 3.5vh;
+    color: #fbbc06;
+    font-family: 'Saintfont';
+    text-wrap: wrap;
+}
+
+.page-wrapper .page-content {
+    padding: 1rem 0;
+    width: 100%;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+    margin-right: auto;
+    margin-left: auto;
+    min-height: calc(100vh - 60px - 50px);
+    flex-grow: 1;
+}
+
+.btn-outline-light {
+    background: #236086;
+    --bs-btn-color: #f8f9fa;
+    --bs-btn-border-color:transparent;
+    --bs-btn-hover-color: #000;
+    --bs-btn-hover-bg: #f8f9fa;
+    --bs-btn-hover-border-color: #f8f9fa;
+    --bs-btn-focus-shadow-rgb: 248, 249, 250;
+    --bs-btn-active-color: #000;
+    --bs-btn-active-bg: #f8f9fa;
+    --bs-btn-active-border-color: #f8f9fa;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #f8f9fa;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #f8f9fa;
+    --bs-gradient: none;
+}
+
+.square {
+    position: relative;
+    height: 100px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    /* border: solid 14px; */
+    background: linear-gradient(to bottom right, #8b041d, #161616);
+}
+
+.label-info {
+    position: relative;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: #f4d322;
+    font-family: 'Saintfont';
+    letter-spacing: 2px;
+}
+
+.text-gold {
+    color: #f4d322 !important;
+    font-family: 'Saintfont';
+    letter-spacing: 2px;
+}
+
+.text-silver {
+    color: #fefcff !important;
+    font-family: 'Saintfont';
+    letter-spacing: 2px;
+}
+
+h3{
+    font-family: 'Saintfont';
+    letter-spacing: 2px;
+}
+
+.btn-menu {
+    border-radius: 5px; /* Bordess circulares */
+    padding: 10px 20px; /* Ajuste de relleno */
+    font-size: 16px; /* Tamaño de fuente */
+    background-color: #404040!important; /* Color de fondo */
+    color: white; /* Color de texto */
+    border: 2px solid #6d6d6d!important; /* Borde */
+    transition: all 0.3s ease; /* Transición suave */
+    align-self: center;
+    font-family: 'Saintfont';
+    letter-spacing: 1px;
+    background: linear-gradient(to bottom right, #404040, #404040);
+    width: 100%; /* Ocupar todo el ancho del contenedor */
+    max-width: 100%; /* Asegurar que no exceda el ancho del contenedor */
+    margin-bottom: 5px; /* Espacio entre botones */
+    font-weight: normal;
+}
+
+.btn-menu:hover {
+    background-color: #cc0c3e!important; /* Cambio de color de fondo al pasar el ratón */
+    background: linear-gradient(to bottom right, #4e95c9, #000000);
+    transform: 1.1;
+    color: #fae528;
+    border-color: #f0ad4e; /* Cambio de color de borde al pasar el ratón */
+}
+
+.stats-text{
+    font-family: 'Reddit';
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: -10px;
+}
+
+.justify-text{
+    text-align: justify;
+}   
+
+
+
+.stats-div
+{
+    align-self: center;
+}
+
+
+.zone-div
+{
+    width: 100%;
+    height: 70px;
+    background: linear-gradient(to bottom right, #8b041d, #161616);
+    color: #f4d322;
+    text-align: center;
+    align-content: center;
+    font-family: 'Saintfont';
+    font-size: 40px;
+    border-radius: 0px 0 30px 30px;
+}
+
+@media (max-width: 767px) {
+    .background-mobile {
+        background-size: 90%!important;
+        background-position: bottom;
+    }
+
+    .col-text-right{
+        text-align: right;
+        padding-right: 60px;
+    }
+}
+
+
+@font-face {
+    font-family: 'Cinzel';
+    src: url('../fonts/Cinzel/Cinzel-VariableFont_wght.ttf') format('truetype');
+    /* Ajusta la ruta según la estructura de tu proyecto */
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Saintfont';
+    src: url('../fonts/CZ/SS.ttf') format('truetype');
+    /* Ajusta la ruta según la estructura de tu proyecto */
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'Reddit';
+    src: url('../fonts/Reddit_Sans_Condensed/RedditSansCondensed-VariableFont_wght.ttf') format('truetype');
+    /* Ajusta la ruta según la estructura de tu proyecto */
+    font-weight: lighter;
+    font-style: normal;
+}
+
+
+.btn-primary{
+    background-color: #37353b;
+    border-color: #37353b;
+}
+
+.btn-primary:hover{
+    background-color: #625760;
+    border-color: #625760;
+}

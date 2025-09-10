@@ -1,8 +1,24 @@
+# backend/app/db.py
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 import os
 
-DB_URL = os.getenv("DATABASE_URL", "mysql+pymysql://rpg_user:rpg_pass@db:3306/rpg")
+# 🔹 Base declarativa
+Base = declarative_base()
 
+# 🔹 URL de la DB
+DB_URL = os.getenv("DATABASE_URL", "mysql+pymysql://root:@db:3306/SSRPG")
+
+# 🔹 Engine
 engine = create_engine(DB_URL, pool_pre_ping=True)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# 🔹 Sesión
+Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# 🔹 Dependencia para obtener sesión de DB
+def get_db():
+    db = Session()
+    try:
+        yield db
+    finally:
+        db.close()
