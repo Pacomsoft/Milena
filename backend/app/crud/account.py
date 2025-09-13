@@ -23,6 +23,7 @@ def get_accounts(db: Session, skip: int = 0, limit: int = 100) -> List[models.Ac
     return db.query(models.Account).offset(skip).limit(limit).all()
 
 
+
 # Obtener usuario por ID
 def get_account(db: Session, account_id: int) -> Optional[models.Account]:
     return db.query(models.Account).filter(models.Account.ac_key == account_id).first()

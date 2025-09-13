@@ -13,9 +13,12 @@ import UnknownPage from "./pages/UnknownPage";
 import Loading from "./pages/Loading";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CrearCaballero from "./pages/CrearCaballero";
+import ImageSelectorForm from "./components/CrearCaballero/ImageSelectorForm"
 
 
 function App() {
+  
   return (
     <AuthProvider>
       <Router>
@@ -55,6 +58,14 @@ function InnerApp() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/CrearCaballero"
+            element={
+              <PrivateRoute>
+                <ImageSelectorForm />
+              </PrivateRoute>
+            }
+          />
           
           {/* Ruta catch-all para páginas no definidas */}
           <Route path="*" element={<UnknownPage />} />
@@ -79,7 +90,14 @@ function RegisterRoute() {
 // Rutas privadas
 function PrivateRoute({ children }) {
   const { user } = useContext(AuthContext);
-  return user ? children : <Navigate to="/" replace />;
+  const { caballero } = useContext(AuthContext);
+
+  if(!user){
+    return <Navigate to="/" replace />;
+  }
+  if (caballero === null) return <ImageSelectorForm />;
+
+  return children 
 }
 
 export default App;

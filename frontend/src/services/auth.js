@@ -26,7 +26,6 @@ export async function getProfile() {
   const res = await fetch(`${API_URL}/auth/me`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-
   if (!res.ok) throw new Error("Unauthorized");
   return res.json();
 }

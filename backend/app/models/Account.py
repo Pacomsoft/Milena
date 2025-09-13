@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, BigInteger, Date, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, BigInteger, Date, DateTime, Boolean, Text
 from ..db import Base  # Base declarativa desde db.py
 
 class Account(Base):
@@ -14,10 +14,10 @@ class Account(Base):
     ac_token = Column(String(128), nullable=True)
     ac_status = Column(Boolean, nullable=False, default=True)
     ac_ban = Column(Boolean, nullable=False, default=False)
-    ac_comments = Column(String(255), nullable=True)
+    ac_comments = Column(Text, nullable=True)
     ac_amonestation = Column(Integer, nullable= True, default=0)
-    ac_question_security = Column(String(255), nullable=False)
-    ac_answer_sec = Column(String(255), nullable=False)
+    ac_question_security = Column(Text, nullable=False)
+    ac_answer_sec = Column(Text, nullable=False)
     ac_lastlogin = Column(DateTime, nullable=True)
     
 

@@ -1,7 +1,7 @@
 import { API_URL } from "../config";
 import { notify } from "../components/Notification";
 
-export async function register(userData){
+export async function RegistrarUsuario(userData){
     const res = await fetch(`${API_URL}/accounts/accounts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

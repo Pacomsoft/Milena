@@ -3,13 +3,9 @@ from sqlalchemy.orm import Session
 from typing import List
 from app.crud import account as AccountCRUD
 from app.schemas import Account as AccountSchema
-from app.models import  Account as AccountModel
 from app.db import get_db
 
-router = APIRouter(
-    prefix="/accounts",
-    tags=["accounts"],
-)
+router = APIRouter()
 
 # Obtener todos los usuarios
 @router.get("/", response_model=List[AccountSchema.AccountOut])
@@ -46,6 +42,7 @@ def create_account(account_in: AccountSchema.AccountCreate, db: Session = Depend
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="¡El nombre de usuario ya está en uso por otro caballero!"
         )
+
     account = AccountCRUD.create_account(db, account_in=account_in)
     return account
 

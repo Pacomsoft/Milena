@@ -36,7 +36,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     if not verify_password(form_data.password, user.ac_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="¡Oh no!. La contraseña que has ingresado es incorrecta")
 
-    access_token = create_access_token(data={"sub": user.ac_username})
+    access_token = create_access_token(data={"sub": user.ac_username, "cuenta":user.ac_key})
     return {"access_token": access_token, "token_type": "bearer"}
 
 
@@ -44,13 +44,13 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
-        print('el usuario es:', username)
+        cuenta: int = payload.get("cuenta")
         if username is None:
             raise HTTPException(status_code=401, detail="Invalid token")
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
-    return {"username": username}
+    return {"username": username, "cuenta":cuenta}
 
 @router.get("/me")
-def read_me(current_user: dict = Depends(get_current_user)):
-    return {"user": current_user}
+def read_me(current_cuenta: dict = Depends(get_current_user)):
+    return {"user": current_cuenta["username"], "cuenta":current_cuenta["cuenta"]}

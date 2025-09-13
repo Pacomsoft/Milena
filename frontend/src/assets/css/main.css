@@ -117,6 +117,18 @@ a:hover {
     text-wrap: wrap;
 }
 
+.horizontal-menu .navbar .navbar-content .navbar-nav .nav-item.dropdown .dropdown-menu {
+    max-width: 280px;
+    position: absolute;
+    right: -20px;
+    left: auto;
+    border-radius: 0;
+    margin-top: 0;
+    border: none;
+    box-shadow: 0 5px 10px 0 rgba(183, 192, 206, 0.2);
+    font-size: .875rem;
+}
+
 .page-wrapper .page-content {
     padding: 1rem 0;
     width: 100%;
@@ -174,6 +186,20 @@ a:hover {
     letter-spacing: 2px;
 }
 
+.p-required{
+    color:#ca2118;
+    font-family: 'Saintfont';
+    text-shadow: 1px 1px 5px #000000;
+}
+
+.input-required{
+    border-left: solid 8px #ca2226;
+}
+
+.select-required{
+    border-left: solid 8px #ca2226!important;
+}
+
 .text-silver {
     color: #fefcff !important;
     font-family: 'Saintfont';
@@ -183,6 +209,7 @@ a:hover {
 h3{
     font-family: 'Saintfont';
     letter-spacing: 2px;
+    font-size: 5vh;
 }
 
 .btn-menu {
@@ -290,4 +317,78 @@ h3{
 .btn-primary:hover{
     background-color: #625760;
     border-color: #625760;
+}
+
+.card-deidad{
+    background: transparent;
+    font-family: 'Saintfont';
+    font-size: 3vh;
+    color: white;
+}
+
+.card-signo{
+    background: transparent;
+    font-family: 'Saintfont';
+    font-size: 3vh;
+    color: white;
+}
+
+.card-deidad-body
+{
+    padding: 0px!important;
+    background:#10121a57;
+}
+.selectable {
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border:none;
+}
+
+.selectable:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px #ffa600e1;
+}
+
+.selected {
+  border: 3px solid #e7e7e7;
+  box-shadow: 0 0 20px e7e7e7#c2c2c2;
+  background: #e7e7e7;
+}
+
+.fade-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.5s ease-in-out;
+}
+.fade-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-exit-active {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s ease-in-out;
+}
+
+@keyframes bounceButton {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.btn-animated {
+  animation: bounceButton 1.2s infinite ease-in-out;
+}
+
+.btn-icon{
+    width: 24px; 
+    height: 24px; 
+    color:#17181e;
 }

@@ -16,6 +16,9 @@ export const notify = (type, message, options = {}) => {
       toast.error(message, {
         position: "top-right",
         autoClose: 3000,
+        theme:'dark',
+        bodyClassName: "text-toast",
+
         ...options,
       });
       break;
@@ -24,6 +27,8 @@ export const notify = (type, message, options = {}) => {
       toast.info(message, {
         position: "top-right",
         autoClose: 4000,
+        theme:'dark',
+        bodyClassName: "text-toast",
         ...options,
       });
       break;
@@ -32,6 +37,8 @@ export const notify = (type, message, options = {}) => {
       toast.warn(message, {
         position: "bottom-center",
         autoClose: 4000,
+        theme:'dark',
+        bodyClassName: "text-toast",
         ...options,
       });
       break;
@@ -39,6 +46,8 @@ export const notify = (type, message, options = {}) => {
     default:
       toast(message, {
         position: "top-right",
+        theme:'dark',
+        bodyClassName: "text-toast",
         ...options,
       });
       break;

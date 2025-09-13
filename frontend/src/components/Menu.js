@@ -10,7 +10,7 @@ import { notify } from "../components/Notification";
   
 
 function Menu(){
-    const { user, loginUser, logoutUser } = useContext(AuthContext);
+    const { user, loginUser, logoutUser , caballero} = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -22,8 +22,9 @@ function Menu(){
     // si no hay usuario logueado, no renderiza nada
     	return null;
   	}
+	
 	return (
-		
+	
 			<div className="horizontal-menu">
 				<nav className="navbar top-navbar">
 					<div className="container">
@@ -49,7 +50,7 @@ function Menu(){
 										<div className="dropdown-body">
 											<a href="" className="dropdown-item">
 												<div className="figure">
-													<img src="https://via.placeholder.com/30x30" alt="userr" />
+													<img src="" alt="userr" />
 												</div>
 												<div className="content">
 													<div className="d-flex justify-content-between align-items-center">
@@ -61,7 +62,7 @@ function Menu(){
 											</a>
 											<a href="" className="dropdown-item">
 												<div className="figure">
-													<img src="https://via.placeholder.com/30x30" alt="userr" />
+													<img src="" alt="userr" />
 												</div>
 												<div className="content">
 													<div className="d-flex justify-content-between align-items-center">
@@ -73,7 +74,7 @@ function Menu(){
 											</a>
 											<a href="" className="dropdown-item">
 												<div className="figure">
-													<img src="https://via.placeholder.com/30x30" alt="userr" />
+													<img src="" alt="userr" />
 												</div>
 												<div className="content">
 													<div className="d-flex justify-content-between align-items-center">
@@ -85,7 +86,7 @@ function Menu(){
 											</a>
 											<a href="" className="dropdown-item">
 												<div className="figure">
-													<img src="https://via.placeholder.com/30x30" alt="userr" />
+													<img src="" alt="userr" />
 												</div>
 												<div className="content">
 													<div className="d-flex justify-content-between align-items-center">
@@ -97,7 +98,7 @@ function Menu(){
 											</a>
 											<a href="" className="dropdown-item">
 												<div className="figure">
-													<img src="https://via.placeholder.com/30x30" alt="userr" />
+													<img src="" alt="userr" />
 												</div>
 												<div className="content">
 													<div className="d-flex justify-content-between align-items-center">
@@ -195,7 +196,7 @@ function Menu(){
 										<img src="images/avatars/admin.png" alt="" />
 										</div>
 										<div className="info text-center">
-										<p className="name font-weight-bold mb-0">Angel_Fenix</p>
+										<p className="name font-weight-bold mb-0">{user.username}</p>
 										</div>
 									</div>
 									</li>
@@ -208,7 +209,7 @@ function Menu(){
 										</a>
 										</li>
 										<li className="nav-item">
-										<a className="nav-link"  onClick={handleLogout}>
+										<a className="nav-link"  onClick={handleLogout} style={{cursor: 'pointer'}}>
 											{/* ...icon... */}
 											<span>Cerrar Sesión</span>
 										</a>
@@ -232,6 +233,8 @@ function Menu(){
 						</div>
 					</div>
 				</nav>
+				{caballero!==null ? 
+				(
 				<nav id="bottomNavbar" className="bottom-navbar collapse">
 					<div className="container">
 						<ul className="nav page-navigation" style={{paddingBottom: "5px", paddingTop: "5px"}}>
@@ -268,6 +271,7 @@ function Menu(){
 						</ul>
 					</div>
 				</nav>
+				):(<></>)}
 			</div>
 
 			
