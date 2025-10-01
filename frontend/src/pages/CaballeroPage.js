@@ -1,19 +1,13 @@
 // src/pages/CaballeroPage.jsx
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import micaballero from '../assets/images/micaballero.png';
+import { AuthContext } from "../context/AuthContext";
 
 const CaballeroPage = () => {
-  const [stats, setStats] = useState(null);
-
+  const {caballero } = useContext(AuthContext);
   // Ejemplo: cargar stats desde el backend
-  useEffect(() => {
-    fetch("/api/caballero") // tu endpoint que devuelve los stats
-      .then((res) => res.json())
-      .then((data) => setStats(data))
-      .catch((err) => console.error(err));
-  }, []);
 
-  if (!stats) return <div>Cargando...</div>;
+  if (!caballero) return <div>Cargando...</div>;
 
   return (
     <div
@@ -24,19 +18,19 @@ const CaballeroPage = () => {
       }}
     >
       <div className="col-lg-6" style={{ alignSelf: "flex-start" }}>
-        <h3>Datos Generales</h3>
+        <h3 className="text-gold">Datos Generales</h3>
         <div className="stats-div">
           {[
-            ["Nombre", stats.alias],
-            ["Signo", stats.sig],
-            ["Nivel", stats.lvl],
-            ["Estado", stats.status],
-            ["Vida", `${stats.activelife}/${stats.lif}`],
-            ["Experiencia", `${stats.exp}/${stats.exp_max}`],
-            ["Oro", stats.oro],
-            ["Habilidad", stats.hab],
-            ["Victorias", 0],
-            ["Derrotas", 0],
+            ["Nombre", caballero.nombre],
+            ["Signo", caballero.id_zona],
+            ["Nivel", caballero.nivel],
+            ["Estado", caballero.estado],
+            ["Vida", `${caballero.salud_actual}/${caballero.salud}`],
+            ["Experiencia", `${caballero.experiencia}/${caballero.experiencia}`],
+            ["Oro", caballero.oro],
+            ["Habilidad", caballero.habilidad],
+            ["Victorias", caballero.victorias],
+            ["Derrotas", caballero.derrotas],
           ].map(([label, value], i) => (
             <div className="row" key={i}>
               <div className="col-6">
@@ -49,20 +43,20 @@ const CaballeroPage = () => {
           ))}
         </div>
 
-        <h3>Estadísticas</h3>
+        <h3 className="text-gold">Estadísticas</h3>
         <div className="stats-div">
           {[
-            ["Fuerza", stats.str],
-            ["Resistencia", stats.res],
-            ["Resistencia Psíquica", stats.resp],
-            ["Velocidad", stats.vel],
-            ["Precisión", stats.pre],
-            ["Reflejos", stats.ref],
-            ["Sabiduría", stats.sab],
-            ["Persistencia", stats.per],
-            ["Cosmo", stats.cos],
-            ["Séptimo sentido", stats.sep],
-            ["Honor", stats.hon],
+            ["Fuerza", caballero.poder],
+            ["Resistencia", caballero.resistencia],
+            ["Resistencia Psíquica", caballero.resistencia_mental],
+            ["Velocidad", caballero.velocidad],
+            ["Precisión", caballero.precision],
+            ["Reflejos", caballero.agilidad],
+            ["Sabiduría", caballero.conocimiento],
+            ["Persistencia", caballero.persistencia],
+            ["Cosmo", caballero.cosmo],
+            ["Séptimo sentido", caballero.septimo_sentido],
+            ["Honor", caballero.honor],
           ].map(([label, value], i) => (
             <div className="row" key={i}>
               <div className="col-6">

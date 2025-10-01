@@ -4,6 +4,8 @@ from typing import List
 from app.crud import account as AccountCRUD
 from app.schemas import Account as AccountSchema
 from app.db import get_db
+from app.api.api_v1.auth import get_current_user
+
 
 router = APIRouter()
 

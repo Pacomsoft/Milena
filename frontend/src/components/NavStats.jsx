@@ -1,16 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 
-function NavStats(){
+function NavStats({caballero}){
+
           return (
         <header className="text-white">
           <div className="container">           
-                // Si está logueado → mostrar stats
               <div className="flex-wrap align-items-center justify-content-between background-mobile"  style={{display:'block'}}>                    
                   <div className="row text-center">
                     <div className="col-lg-2 col-md-2 col-sm-4 mb-4 info-base">
                       <center>
                         <div className="square bg-danger border border-3 border-warning p-3">
-                          <h3 className="text-gold">1</h3>
+                          <h3 className="text-gold">{caballero.nivel}</h3>
                         </div>
                       </center>
                       <div className="label-info mt-2 text-silver">Nivel</div>
@@ -18,7 +18,7 @@ function NavStats(){
                     <div className="col-lg-2 col-md-3 col-sm-4 mb-4 info-base">
                       <center>
                         <div className="square bg-danger border border-3 border-warning p-3">
-                          <h3 className="text-gold">100</h3>
+                          <h3 className="text-gold">-</h3>
                         </div>
                       </center>
                       <div className="label-info mt-2 text-silver">Armadura</div>
@@ -26,7 +26,7 @@ function NavStats(){
                     <div className="col-lg-2 col-md-3 col-sm-4 mb-4 info-base">
                       <center>
                         <div className="square bg-danger border border-3 border-warning p-3">
-                          <h3 className="text-gold">250</h3>
+                          <h3 className="text-gold">{caballero.vida_actual}</h3>
                         </div>
                       </center>
                       <div className="label-info mt-2 text-silver">Vida</div>
@@ -34,7 +34,7 @@ function NavStats(){
                     <div className="col-lg-2 col-md-3 col-sm-4 mb-4 info-base">
                       <center>
                         <div className="square bg-danger border border-3 border-warning p-3">
-                          <h3 className="text-gold">100</h3>
+                          <h3 className="text-gold">{caballero.cosmo}</h3>
                         </div>
                       </center>
                       <div className="label-info mt-2 text-silver">Cosmo</div>
@@ -42,7 +42,7 @@ function NavStats(){
                     <div className="col-lg-2 col-md-3 col-sm-4 mb-4 info-base">
                       <center>
                         <div className="square bg-danger border border-3 border-warning p-3">
-                          <h3 className="text-gold">25</h3>
+                          <h3 className="text-gold">{caballero.oro}</h3>
                         </div>
                       </center>
                       <div className="label-info mt-2 text-silver">Oro</div>
@@ -50,7 +50,7 @@ function NavStats(){
                     <div className="col-lg-2 col-md-3 col-sm-4 mb-4 info-base">
                       <center>
                         <div className="square bg-danger border border-3 border-warning p-3">
-                          <h3 className="text-gold">500</h3>
+                          <h3 className="text-gold">{caballero.habilidad}</h3>
                         </div>
                       </center>
                       <div className="label-info mt-2 text-silver">Habilidad</div>
@@ -62,4 +62,4 @@ function NavStats(){
       );
 }
 
-export default NavStats();
+export default NavStats;

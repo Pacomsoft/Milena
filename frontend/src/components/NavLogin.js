@@ -4,13 +4,14 @@ import { useForm } from "react-hook-form";
 import logo from "../assets/images/logo-ssrpg.png"
 import { login, getProfile } from "../services/auth";
 import { notify } from "../components/Notification";
+import { getCaballero } from "../services/caballero";
 
 
 function NavLogin() {
     
     const { loginUser } = useContext(AuthContext);    
     const { register, handleSubmit, formState: { errors } } = useForm();
-    
+
     async function handleLogin(data) 
     {
         const username = data.username;
@@ -20,8 +21,9 @@ function NavLogin() {
         {            
             await login(username, password); // retorna token y user
             let profile = await getProfile(); // { user: { username: ... } }
+            let caballeroData = await getCaballero(profile.cuenta, profile.token);            
             
-            loginUser(profile.cuenta); // guardar en contexto
+            loginUser(profile.cuenta, profile.token, profile.user, caballeroData); // guardar en contexto
             
             notify("success", "Bienvenido de vuelta Caballero " + profile.user);
         } 

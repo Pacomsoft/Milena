@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { getDivinidades } from "../../services/divinidad";
 import { getSignos } from "../../services/zodiaco";
+import { getAllBoosts } from "../../services/boost";
+import FormStats  from "../FormStats";
+
 import { notify } from "../../components/Notification";
 import useStepper from "../../hooks/useStepper";
 
@@ -11,9 +14,13 @@ import StepOtrosDatos from "./steps/StepStats";
 export default function ImageSelectorForm() {
   const [divinidades, setDivinidades] = useState([]);
   const [signos, setSignos] = useState([]);
+  const [boosts, setBoosts] = useState([]);
+  const boostActuales = [];
 
   const [selectedDiv, setSelectedDiv] = useState(null);
   const [selectedDivZo, setSelectedDivZo] = useState(null);
+
+
   const [otrosDatos, setOtrosDatos] = useState({ nombre: "", edad: "" });
 
   const descriptionRef = useRef(null);
@@ -25,9 +32,10 @@ export default function ImageSelectorForm() {
   useEffect(() => {
     async function fetchCrear() {
       try {
-        const [divs, sigs] = await Promise.all([getDivinidades(), getSignos()]);
+        const [divs, sigs, bsts] = await Promise.all([getDivinidades(), getSignos(), getAllBoosts()]);
         setDivinidades(divs);
         setSignos(sigs);
+        setBoosts(bsts);
       } catch (error) {
         notify("error", "Error al obtener divinidades y signos: " + error.message);
       } finally {
@@ -62,7 +70,7 @@ export default function ImageSelectorForm() {
       otros: otrosDatos,
     };
 
-    console.log("Datos enviados:", payload);
+  
     notify("success", "Datos enviados correctamente");
 
     // fetch("/api/guardar", {
@@ -79,6 +87,7 @@ export default function ImageSelectorForm() {
       {step === 1 && (
         <StepDeidad
           divinidades={divinidades}
+          boosts={boosts}
           selectedDiv={selectedDiv}
           setSelectedDiv={setSelectedDiv}
           descriptionRef={descriptionRef}
@@ -89,6 +98,7 @@ export default function ImageSelectorForm() {
       {step === 2 && (
         <StepSigno
           signos={signos}
+          boosts={boosts}
           selectedDivZo={selectedDivZo}
           setSelectedDivZo={setSelectedDivZo}
           descriptionRefZo={descriptionRefZo}
@@ -98,14 +108,13 @@ export default function ImageSelectorForm() {
       )}
 
       {step === 3 && (
-        <StepOtrosDatos otrosDatos={otrosDatos} setOtrosDatos={setOtrosDatos} onPrev={prev} />
+        <StepOtrosDatos otrosDatos={otrosDatos} setOtrosDatos={setOtrosDatos} onPrev={prev} boosts={boosts} selectedDiv={selectedDiv} selectedDivZo={selectedDivZo} FormStats={FormStats} boostActuales={boostActuales}/>
       )}
 
       {/* Inputs ocultos para el POST tradicional */}
       <input type="hidden" name="deidad" value={selectedDiv?.di_key || ""} />
       <input type="hidden" name="signo" value={selectedDivZo?.zo_key || ""} />
-      <input type="hidden" name="nombre" value={otrosDatos.nombre} />
-      <input type="hidden" name="edad" value={otrosDatos.edad} />
+
     </form>
   );
 }

@@ -1,17 +1,25 @@
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import NextIcon from "../../icons/Next";
 import BackIcon from "../../icons/Back";
+import {motion} from "framer-motion"
 
-export default function StepSigno({ signos, selectedDivZo, setSelectedDivZo, descriptionRefZo, onNext, onPrev }) {
+export default function StepSigno({ signos, boosts, selectedDivZo, setSelectedDivZo, descriptionRefZo, onNext, onPrev }) {
   return (
     <div className="p-4">
-      <h3 className="text-center text-gold" style={{ fontSize: "5vh" }}>
+      <h3 className="text-center text-warning" style={{ fontSize: "5vh" }}>
         Selecciona un signo Zodiacal
       </h3>
+      <p className="text-justify">
+        La constelación que elijas marcará te guiara en el camino como caballero. Obtendrás un bonus único en tus habilidades, con el cual definirás tu estilo de combate, también, podrás ser protector de la casa en el Santuario, recibiendo desafíos de otros caballeros y obteniendo grandes recompensas por mantener impenetrable tu posición. Además, tu constelación te protegerá en las batallas difíciles, apareciendo para incrementar tu poder cuando mas lo necesites. 
+        {" "}
+        <strong className="text-gold">
+          Tu elección ES DEFINITIVA: NO PODRÁS CAMBIAR DE CONSTELACIÓN MAS ADELANTE.
+        </strong>{" "}
+      </p>
 
-      <div className="row g-6">
+      <motion.div className="row g-6" initial="hidden" animate="visible" variants={{hidden: {}, visible: {transition: {staggerChildren: 0.1,},},}}>
         {signos.map((img) => (
-          <div className="col-md-2" key={img.zo_key}>
+          <motion.div className="col-md-2 box" key={img.zo_key} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 },}} transition={{ duration: 0.4 }}>
             <div
               className={`card selectable card-signo ${
                 selectedDivZo?.zo_key === img.zo_key ? "selected" : ""
@@ -38,9 +46,9 @@ export default function StepSigno({ signos, selectedDivZo, setSelectedDivZo, des
                 <p className="card-text">{img.zo_name}</p>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>      
 
       {selectedDivZo && (
         <SwitchTransition>
@@ -48,10 +56,23 @@ export default function StepSigno({ signos, selectedDivZo, setSelectedDivZo, des
             <div
               ref={descriptionRefZo}
               className="mt-4 text-center epic-description p-3 rounded shadow-lg mx-auto"
-              style={{ color: "#ffc107", background: "#10121aa1", borderRadius: "30px" }}
+              style={{  background: "#10121aa1", borderRadius: "30px" }}
             >
                 <h4 className="text-gold" style={{fontWeight:"bold", textTransform:"uppercase"}}>{selectedDivZo.zo_name}</h4>
               {selectedDivZo.zo_description}
+              <div>
+                {
+                  //boosts.map((boost)=>(boost.bo_description))}
+                  boosts
+                  .filter(b => b.bo_type === 'Signo' && b.bo_origin === selectedDivZo.zo_key).
+                  map((boost) =>
+                  (
+                    <div key={'BS'+boost.bo_origin}>
+                     
+                      <p style={{color:"#f4d322"}}> <label id="descriptionBD">{boost.bo_description}</label> Tu caballero obtendrá una bonificación de <label id="cantidad" className="text-alert-green">{boost.bo_quantity} {boost.bo_unit} en {boost.bo_stat}</label>.</p>
+                    </div>
+                ))}
+                </div>
             </div>
           </CSSTransition>
         </SwitchTransition>

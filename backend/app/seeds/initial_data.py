@@ -1,8 +1,42 @@
 
 from ..db import Session
 from app import models
-
+from datetime import datetime
 def init_data(db: Session):
+# Limpiar tabla antes de insertar
+    db.query(models.Niveles).delete()
+    db.commit()
+
+    niveles_list = []
+
+    niveles_totales = 100
+    exp_max = 32000  # experiencia acumulada nivel 100
+    p = 1.8          # potencia para curva progresiva
+    k = exp_max / (niveles_totales ** p)
+
+    base_oro = 200
+    oro_growth = 1.05  # oro aumenta 10% por nivel
+
+    for nivel in range(1, niveles_totales + 1):
+        # Experiencia mínima acumulada para alcanzar este nivel
+        exp_acumulada = round(k * (nivel ** p))
+
+        oro_reward = int(base_oro * (oro_growth ** (nivel - 1)))
+
+        nivel_obj = models.Niveles(
+            ni_level=nivel,
+            ni_exp_necessary=exp_acumulada,  # experiencia mínima acumulada
+            ni_exp_accumulated=exp_acumulada,
+            ni_oro_reward=oro_reward,
+            ni_habilidad=None,  # no se otorgan puntos de habilidad
+            ni_other_reward=None,
+            ni_createddate=int(datetime.utcnow().timestamp())
+        )
+
+        niveles_list.append(nivel_obj)
+
+    db.bulk_save_objects(niveles_list)
+    db.commit()
     if db.query(models.Divinidad).count() == 0:
         divinidades = [
             models.Divinidad(di_name="Hades", di_description = "Señor del inframundo y maestro de la muerte, Hades es el guardián de los secretos eternos. Su poder proviene del equilibrio entre la vida y la muerte, y su ideal es mantener la justicia absoluta más allá del mundo mortal. Solo los dignos pueden comprender su frío pero justo juicio. Su símbolo es la oscuridad, el destino inevitable y el poder absoluto sobre los reinos ocultos.", di_icon="hades.png"),
@@ -56,6 +90,195 @@ def init_data(db: Session):
 
         ]
         db.add_all(zonas)
+        db.commit()
+
+    if db.query(models.Boost).count()==0:
+        boosts=[
+            #Boost de Deidades
+            # Hades 
+            models.Boost(
+                bo_name="Manto del Inframundo",
+                bo_description="El poder sombrío de Hades envuelve a su caballero, endureciendo su espíritu y cuerpo frente al sufrimiento eterno.",
+                bo_type="Deidad",
+                bo_origin=1, # ID de Hades
+                bo_unit="%",
+                bo_stat="Resistencia",
+                bo_quantity=15
+            ),
+
+            # Athena
+            models.Boost(
+                bo_name="Luz de la Justicia",
+                bo_description="La bendición de Athena ilumina el camino del caballero, dándole fortaleza para proteger y luchar incansablemente.",
+                bo_type="Deidad",
+                bo_origin=2, # ID de Athena
+                bo_unit="%",
+                bo_stat="Vida Máxima",
+                bo_quantity=12
+            ),
+
+            # Poseidon
+            models.Boost(
+                bo_name="Oleaje Incontenible",
+                bo_description="Las mareas de Poseidón fluyen en su elegido, otorgándole precisión con la furia de los océanos.",
+                bo_type="Deidad",
+                bo_origin=3, # ID de Poseidon
+                bo_unit="%",
+                bo_stat="Presición",
+                bo_quantity=15
+            ),
+
+            # Odín
+            models.Boost(
+                bo_name="Sabiduría de Asgard",
+                bo_description="El manto de Odín otorga a su caballero la visión y voluntad inquebrantable de los dioses nórdicos.",
+                bo_type="Deidad",
+                bo_origin=4, # ID de Odín
+                bo_unit="%",
+                bo_stat="Sabiduría",
+                bo_quantity=10
+            ),
+
+            #Boost de signos
+            models.Boost(
+                        bo_name="Astucia del Carnero",
+                        bo_description="La constelación de Aries otorga claridad y mente táctica para abrir caminos en la batalla.",
+                        bo_type="Signo",
+                        bo_origin=1,
+                        bo_unit="%",
+                        bo_stat="Sabiduría",
+                        bo_quantity=4
+                    ),
+
+                    # Tauro
+                    models.Boost(
+                        bo_name="Fuerza Indomable",
+                        bo_description="El espíritu del toro imprime poder y constancia al caballero, volviéndolo imparable en combate.",
+                        bo_type="Signo",
+                        bo_origin=2,
+                        bo_unit="%",
+                        bo_stat="Resistencia",
+                        bo_quantity=6
+                    ),
+
+                    # Géminis
+                    models.Boost(
+                        bo_name="Dualidad Cósmica",
+                        bo_description="La energía dual de Géminis amplifica la velocidad de reacción y adaptación en la batalla.",
+                        bo_type="Signo",
+                        bo_origin=3,
+                        bo_unit="%",
+                        bo_stat="Reflejos",
+                        bo_quantity=5
+                    ),
+
+                    # Cáncer
+                    models.Boost(
+                        bo_name="Aura del Guardián",
+                        bo_description="El caballero bajo Cáncer canaliza el umbral entre la vida y la muerte, resistiendo ataques que quebrarían a otros.",
+                        bo_type="Signo",
+                        bo_origin=4,
+                        bo_unit="%",
+                        bo_stat="Resistencia Psíquica",
+                        bo_quantity=6
+                    ),
+
+                    # Leo
+                    models.Boost(
+                        bo_name="Rugido Solar",
+                        bo_description="La constelación de Leo infunde un fuego interior que brilla con poder demoledor.",
+                        bo_type="Signo",
+                        bo_origin=5,
+                        bo_unit="%",
+                        bo_stat="Fuerza",
+                        bo_quantity=3
+                    ),
+
+                    # Virgo
+                    models.Boost(
+                        bo_name="Calma del Cosmos",
+                        bo_description="La pureza de Virgo concede disciplina y conocimiento espiritual al caballero.",
+                        bo_type="Signo",
+                        bo_origin=6,
+                        bo_unit="%",
+                        bo_stat="Cosmo",
+                        bo_quantity=6
+                    ),
+
+                    # Libra
+                    models.Boost(
+                        bo_name="Equilibrio Supremo",
+                        bo_description="El aura de Libra balancea cuerpo y mente, afinando la precisión en cada golpe.",
+                        bo_type="Signo",
+                        bo_origin=7,
+                        bo_unit="%",
+                        bo_stat="Precisión",
+                        bo_quantity=6
+                    ),
+
+                    # Escorpio
+                    models.Boost(
+                        bo_name="Veneno Letal",
+                        bo_description="La intensidad de Escorpio otorga agilidad mortal, esquivando y contraatacando sin piedad.",
+                        bo_type="Signo",
+                        bo_origin=8,
+                        bo_unit="%",
+                        bo_stat="Reflejos",
+                        bo_quantity=5
+                    ),
+
+                    # Sagitario
+                    models.Boost(
+                        bo_name="Flecha de Luz",
+                        bo_description="El espíritu de Sagitario impulsa al caballero hacia la victoria con velocidad celestial.",
+                        bo_type="Signo",
+                        bo_origin=9,
+                        bo_unit="%",
+                        bo_stat="Velocidad",
+                        bo_quantity=3
+                    ),
+
+                    # Capricornio
+                    models.Boost(
+                        bo_name="Disciplina de Capricornio",
+                        bo_description="Los caballeros de Capricornio son conocidos por su temple y precisión en combate. Su disciplina les otorga una puntería impecable y una fuerza medida en cada ataque.",
+                        bo_type="Signo",
+                        bo_origin=10,
+                        bo_unit="%",
+                        bo_stat="Precisión",
+                        bo_quantity=6
+                    ),
+
+                    # Acuario
+                    models.Boost(
+                        bo_name="Corriente del Futuro",
+                        bo_description="La constelación de Acuario derrama el flujo del cosmos, potenciando la energía vital del caballero.",
+                        bo_type="Signo",
+                        bo_origin=11,
+                        bo_unit="%",
+                        bo_stat="Cosmo",
+                        bo_quantity=6
+                    ),
+
+                    # Piscis
+                    models.Boost(
+                        bo_name="Danza de las Rosas",
+                        bo_description="Piscis otorga una gracia en combate que entrelaza agilidad con un poder delicado pero mortal.",
+                        bo_type="Signo",
+                        bo_origin=12,
+                        bo_unit="%",
+                        bo_stat="Reflejos",
+                        bo_quantity=5
+                    )            
+        ]
+        db.add_all(boosts)
+        db.commit()
+
+    if db.query(models.Boost).count()==0:
+        boosts=[
+                    
+            ]
+        db.add_all(boosts)
         db.commit()
 
 if __name__ == "__main__":

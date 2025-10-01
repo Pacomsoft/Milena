@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 
@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 import CaballeroPage from "./pages/CaballeroPage";
+import EntrenarPage from "./pages/EntrenarPage"
 import Menu from "./components/Menu";
 import RegisterPage from "./pages/RegisterPage";
 import UnknownPage from "./pages/UnknownPage";
@@ -15,9 +16,28 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CrearCaballero from "./pages/CrearCaballero";
 import ImageSelectorForm from "./components/CrearCaballero/ImageSelectorForm"
-
+import BackendDownPage from "./pages/BackendDown";
+import { API_URL } from "./config";
 
 function App() {
+
+  const [backendOnline, setBackendOnline] = useState(true);
+
+  useEffect(() => {
+    fetch(`${API_URL}/server/ping`)
+      .then((res) => {
+        if (res.ok) {
+          setBackendOnline(true);
+        } else {
+          setBackendOnline(false);
+        }
+      })
+      .catch(() => setBackendOnline(false));
+  }, []);
+
+  if (!backendOnline) {
+    return <BackendDownPage></BackendDownPage>
+  }
   
   return (
     <AuthProvider>
@@ -59,6 +79,14 @@ function InnerApp() {
             }
           />
           <Route
+            path="/Entrenar"
+            element={
+              <PrivateRoute>
+                <EntrenarPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/CrearCaballero"
             element={
               <PrivateRoute>
@@ -92,12 +120,11 @@ function PrivateRoute({ children }) {
   const { user } = useContext(AuthContext);
   const { caballero } = useContext(AuthContext);
 
-  if(!user){
-    return <Navigate to="/" replace />;
-  }
+  if (!user) return <Navigate to="/" replace />;
+  if (caballero === undefined) return <Loading />; // todavía cargando
   if (caballero === null) return <ImageSelectorForm />;
-
-  return children 
+  return children;
 }
+export { App, InnerApp };
 
-export default App;
+

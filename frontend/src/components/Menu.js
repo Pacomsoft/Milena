@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import logo from '../assets/images/logo-ssrpg.png';
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate} from "react-router-dom";
@@ -10,8 +10,19 @@ import { notify } from "../components/Notification";
   
 
 function Menu(){
-    const { user, loginUser, logoutUser , caballero} = useContext(AuthContext);
+    const { user, loginUser, logoutUser , caballero, username} = useContext(AuthContext);
     const navigate = useNavigate();
+
+	  // Inicializa el estado leyendo de localStorage
+	const [menuVisible, setMenuVisible] = useState(() => {
+		const saved = localStorage.getItem("menuVisible");
+		return saved === "true"; // devuelve true o false
+	});
+
+	// Guarda el estado en localStorage cada vez que cambie
+	useEffect(() => {
+		localStorage.setItem("menuVisible", menuVisible);
+	}, [menuVisible]);
 
     const handleLogout = () => {
       logoutUser();
@@ -35,7 +46,20 @@ function Menu(){
 							<ul className="navbar-nav">	
 								
 								<li className="nav-item dropdown">
-									<a className="barra-status ">Explorando:</a> <a className="barra-status value" id="timerest" name="timerest">10</a>
+									
+								{caballero && caballero.estado && (
+								caballero.estado !== 'Ready' ? (
+									<>
+									<span className="barra-status">{caballero.estado}:</span>
+									<span className="barra-status value" id="timerest" name="timerest">10</span>
+									</>
+								) : (
+									<span className="barra-status">¡Listo!</span>
+								)
+								)}
+											
+									
+									
 								</li>						
 								
 								<li className="nav-item dropdown nav-messages">
@@ -196,7 +220,7 @@ function Menu(){
 										<img src="images/avatars/admin.png" alt="" />
 										</div>
 										<div className="info text-center">
-										<p className="name font-weight-bold mb-0">{user.username}</p>
+										<p className="name font-weight-bold mb-0">{username}</p>
 										</div>
 									</div>
 									</li>
@@ -226,7 +250,8 @@ function Menu(){
 								data-bs-target="#bottomNavbar"
 								aria-controls="bottomNavbar"
 								aria-expanded="false"
-								aria-label="Toggle navigation"								
+								aria-label="Toggle navigation"	
+								onClick={() => setMenuVisible(!menuVisible)}								
 								>
 								<span className="navbar-toggler-icon"></span>
 							</button>
@@ -235,7 +260,7 @@ function Menu(){
 				</nav>
 				{caballero!==null ? 
 				(
-				<nav id="bottomNavbar" className="bottom-navbar collapse">
+				<nav id="bottomNavbar"   className={`bottom-navbar collapse ${menuVisible ? "show" : ""}`}>
 					<div className="container">
 						<ul className="nav page-navigation" style={{paddingBottom: "5px", paddingTop: "5px"}}>
 							<li className="nav-item">

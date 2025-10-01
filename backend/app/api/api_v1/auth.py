@@ -44,13 +44,15 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
-        cuenta: int = payload.get("cuenta")
+        cuenta: int = payload.get("cuenta")        
         if username is None:
-            raise HTTPException(status_code=401, detail="Invalid token")
-    except JWTError:
-        raise HTTPException(status_code=401, detail="Invalid token")
-    return {"username": username, "cuenta":cuenta}
+            raise HTTPException(status_code=401, detail="Error: Usuario no permitido.")
+    except JWTError as e:
+        print("JWTError:", str(e))  # 👈 imprime el error real en consola
+        raise HTTPException(status_code=401, detail="¿Que intentas realizar? Tu cuenta podría ser bloqueada.")
+    
+    return {"username": username, "cuenta":cuenta, "token":token}
 
 @router.get("/me")
 def read_me(current_cuenta: dict = Depends(get_current_user)):
-    return {"user": current_cuenta["username"], "cuenta":current_cuenta["cuenta"]}
+    return {"user": current_cuenta["username"], "cuenta":current_cuenta["cuenta"], "token":current_cuenta["token"]}

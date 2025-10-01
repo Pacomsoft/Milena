@@ -2,17 +2,17 @@ import { API_URL } from "../config";
 import { notify } from "../components/Notification";
 
 export async function RegistrarUsuario(userData){
-    const res = await fetch(`${API_URL}/accounts/accounts`, {
+    const res = await fetch(`${API_URL}/accounts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            ac_email: userData.email,
-            ac_username: userData.username,
-            ac_birthday: userData.birthday,
-            ac_comments: "",
-            ac_question_security: userData.question,
-            ac_answer_sec: userData.answer,
-            ac_password: userData.password
+            'correo': userData.email,
+            'username': userData.username,
+            'nacimiento': userData.birthday,
+            'comentarios': "",
+            'pregunta': userData.question,
+            'respuesta': userData.answer,
+            'contrasena': userData.password
         })
     });
 

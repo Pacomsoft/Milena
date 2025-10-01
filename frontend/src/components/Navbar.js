@@ -1,27 +1,25 @@
-// src/components/Navbar.jsx
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
-import NavLogin from "../components/NavLogin"
-import NavStats from "../components/NavStats"
+import NavLogin from "../components/NavLogin";
+import NavStats from "../components/NavStats";
+import Loading from "../pages/Loading";
 
 function Navbar() {
   const { user, caballero } = useContext(AuthContext);
-  if(caballero!==null)
-  {
-    return <NavStats/>;
 
+  // Estado 2: si hay caballero, mostrar stats
+  if (caballero !== null && caballero !== undefined) {
+    return <NavStats caballero={caballero} />;
   }
-  else
-  {
-    if(user===null)
-    {
-      return <NavLogin/>;   
-    }
-    else{
-      return null;
-    }
+
+  // Estado 3: no hay caballero
+  if (user === null) {
+    return <NavLogin />;
   }
+
+  // Estado 4: usuario con sesión pero sin caballero
+  return null;
 }
 
 export default Navbar;

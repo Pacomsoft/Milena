@@ -64,7 +64,6 @@ export default function ImageSelectorForm() {
       signo: selectedDivZo,
       otros: otrosDatos,
     };
-    console.log("Datos enviados:", payload);
     notify("success", "Datos enviados correctamente");
 
     // Aquí podrías hacer el POST real:

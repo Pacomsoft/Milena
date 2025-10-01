@@ -16,3 +16,13 @@ def get_divinidades(db: Session = Depends(get_db)):
 
     # si quieres devolver solo el primero
     return divinidades
+
+@router.get("/GET_Divinidad/{id}", response_model=Optional[DivinidadSchema.DivinidadOut])
+def get_divinidad(id:int, db: Session = Depends(get_db)):
+    divinidad = DivinidadCRUD.get_deidad(db, id)
+    
+    if not divinidad:
+        return None  # no hay caballero, devuelve null
+
+    # si quieres devolver solo el primero
+    return divinidad

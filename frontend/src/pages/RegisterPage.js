@@ -5,8 +5,11 @@ import { notify } from "../components/Notification";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { login, getProfile } from "../services/auth";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 
 function RegisterPage() {
+const navigate = useNavigate();
 
 const { user, loginUser } = useContext(AuthContext);    
 const { register, handleSubmit, formState: { errors } } = useForm();
@@ -30,21 +33,11 @@ async function handleRegister(data){
 
     // 1️⃣ Registrar usuario
     await RegistrarUsuario(userData);
-    notify("success", "Registro exitoso! Iniciando sesión...");
+    notify("success", "Registro exitoso! Ahora puedes iniciar con tus credenciales...");
+    navigate("/"); // redirige a la ruta "/"
 
-    // 2️⃣ Login con los datos recién creados
-    const loginResult = await login(userData.username, userData.password);
-
-    // 3️⃣ Traer profile
-    const profile = await getProfile();
-
-    // 4️⃣ Guardar en contexto
-    loginUser(profile.user);
-
-    // 5️⃣ Notificación final
-    notify("success", "Bienvenido caballero " + profile.user.username + ", es un honor tenerte aquí!");
     } catch (error) {
-    notify("error", "Error durante registro/login: " + error.message);
+    notify("error", "Error durante registro: " + error.message);
     } finally {
     setLoading(false);
     }
