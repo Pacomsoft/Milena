@@ -3,6 +3,16 @@ import logo from '../assets/images/logo-ssrpg.png';
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate} from "react-router-dom";
 import { notify } from "../components/Notification";
+import icon_cosmo from '../assets/images/icons/cosmo.png';
+import icon_caballero from '../assets/images/icons/caballero2.png';
+import icon_armadura from '../assets/images/icons/armadura.png';
+import icon_enemigo from '../assets/images/icons/enemigo.png';
+import icon_coliseo from '../assets/images/icons/coliseo.png';
+import icon_inventario from '../assets/images/icons/inventario.png';
+import icon_explorar from '../assets/images/icons/explorar.png';
+import icon_viajar from '../assets/images/icons/viajar.png';
+import icon_misiones from '../assets/images/icons/misiones.png';
+import icon_entrenar from '../assets/images/icons/entrenar.png';
 
 
     
@@ -264,34 +274,96 @@ function Menu(){
 					<div className="container">
 						<ul className="nav page-navigation" style={{paddingBottom: "5px", paddingTop: "5px"}}>
 							<li className="nav-item">
-								<a href="/Caballero" className="btn btn-menu">CABALLERO</a>
+								<a href="/Caballero" className="btn btn-menu align-items-center gap-2" style={{ fontSize: "0.8rem" }}>
+									<img 
+									src={icon_caballero} 
+									alt="Caballero" 
+									style={{ width: "30px", height: "30px", marginRight: "5px" }} 
+									/>
+								CABALLERO</a>
 							</li>						
 							<li className="nav-item">
-								<a href="/Inventario" className="btn btn-menu">INVENTARIO</a>
+								<a href="/Inventario" className="btn btn-menu align-items-center gap-2" style={{ fontSize: "0.8rem" }}>
+									<img 
+									src={icon_inventario} 
+									alt="Inventario" 
+									style={{ width: "30px", height: "30px", marginRight: "5px" }} 
+									/>
+									INVENTARIO</a>
 							</li>
 							<li className="nav-item">
-								<a href="/Armadura" className="btn btn-menu">ARMADURA</a>
+								<a href="/Armadura" className="btn btn-menu align-items-center gap-2" style={{ fontSize: "0.8rem" }}>
+									<img 
+									src={icon_armadura} 
+									alt="Armadura" 
+									style={{ width: "30px", height: "30px", marginRight: "5px" }} 
+									/>
+									ARMADURA</a>
 							</li>
 							<li className="nav-item">
-								<a href="/Enemigo" className="btn btn-menu">ENEMIGO</a>
+								<a href="/Enemigo" className="btn btn-menu align-items-center gap-2" style={{ fontSize: "0.8rem" }}>
+								<img 
+								src={icon_enemigo}
+								alt={"Enemigo"}
+								style={{ width: "30px", height: "30px", marginRight: "5px" }}
+								/>
+								ENEMIGO</a>
 							</li>
 							<li className="nav-item">
-								<a href="/Coliseo" className="btn btn-menu">COLISEO</a>
+								<a href="/Coliseo" className="btn btn-menu  align-items-center gap-2" style={{ fontSize: "0.8rem" }}>
+								<img 
+								src={icon_coliseo}
+								alt={"Coliseo"}
+								style={{ width: "30px", height: "30px", marginRight: "5px" }}
+								/>
+								COLISEO</a>
 							</li>
 							<li className="nav-item">
-								<a href="/Explorar" className="btn btn-menu">EXPLORAR</a>
+								<a href="/Explorar" className="btn btn-menu  align-items-center gap-2" style={{ fontSize: "0.8rem" }}>
+									<img 
+									src={icon_explorar} 
+									alt={"Explorar"}
+									style={{ width: "30px", height: "30px", marginRight: "5px" }}
+									/>
+									EXPLORAR</a>
 							</li>
 							<li className="nav-item">
-								<a href="/Viajar" className="btn btn-menu">VIAJAR</a>
+								<a href="/Viajar" className="btn btn-menu  align-items-center gap-2" style={{ fontSize: "0.8rem" }}>
+									<img 
+									src={icon_viajar} 
+									alt={"Viajar"}
+									style={{ width: "30px", height: "30px", marginRight: "5px" }}
+									/>
+									VIAJAR</a>
 							</li>
 							<li className="nav-item">
-								<a href="/Cosmo" className="btn btn-menu">COSMO</a>
+								<a href="/Cosmo" className="btn btn-menu align-items-center gap-2" style={{ fontSize: "0.8rem" }}>
+									<img 
+									src={icon_cosmo} 
+									alt="Cosmo" 
+									style={{ width: "30px", height: "30px", marginRight: "5px" }} 
+									/>
+									COSMO
+								</a>
+							</li>
+
+							<li className="nav-item">
+								<a href="/Misiones" className="btn btn-menu align-items-center gap-2" style={{ fontSize: "0.8rem" }}>
+									<img 
+									src={icon_misiones} 
+									alt="Misiones" 
+									style={{ width: "30px", height: "30px", marginRight: "5px" }} 
+									/>
+									MISIONES</a>
 							</li>
 							<li className="nav-item">
-								<a href="/Misiones" className="btn btn-menu">MISIONES</a>
-							</li>
-							<li className="nav-item">
-								<a href="/Entrenar" className="btn btn-menu">ENTRENAR</a>
+								<a href="/Entrenar" className="btn btn-menu align-items-center gap-2" style={{ fontSize: "0.8rem" }}>
+									<img 
+									src={icon_entrenar} 
+									alt="Entrenar" 
+									style={{ width: "30px", height: "30px", marginRight: "5px" }} 
+									/>
+									ENTRENAR</a>
 							</li>
 						</ul>
 					</div>

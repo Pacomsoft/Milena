@@ -11,6 +11,6 @@ class Zona(Base):
     zon_minlevel = Column(Integer, nullable=False, default=1)
     zon_req_prem = Column(Boolean, nullable=False, default = False)
     zon_status = Column(Boolean, nullable=False, default = True)
-    zon_image = Column(Text, nullable=True, default = "isla_entrenamiento.png")
+    zon_image = Column(Text, nullable=True, default = "isla_entrenamient.png")
     zon_createdate = Column(DateTime, nullable=False, default = datetime.utcnow)
     zon_lastupdated = Column(DateTime, nullable=False, default = datetime.utcnow)

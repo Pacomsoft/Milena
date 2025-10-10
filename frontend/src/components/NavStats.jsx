@@ -26,7 +26,7 @@ function NavStats({caballero}){
                     <div className="col-lg-2 col-md-3 col-sm-4 mb-4 info-base">
                       <center>
                         <div className="square bg-danger border border-3 border-warning p-3">
-                          <h3 className="text-gold">{caballero.vida_actual}</h3>
+                          <h3 className="text-gold">{caballero.salud_actual}</h3>
                         </div>
                       </center>
                       <div className="label-info mt-2 text-silver">Vida</div>

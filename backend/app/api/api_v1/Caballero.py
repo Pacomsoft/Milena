@@ -7,6 +7,12 @@ from app.schemas import Caballero as CaballeroSchema
 from app.db import get_db
 from datetime import datetime
 from app.operations.entrenar import *
+from app.operations.combate import combate
+from app.models import Caballero as CaballeroModel
+from pydantic import BaseModel
+from app.models import Combate as CombateModel
+from app.schemas import Combate as CombateSchema
+
 
 router = APIRouter()
 
@@ -47,7 +53,6 @@ def create_caballero(
 
 @router.post("/addStat", response_model=CaballeroSchema.CaballeroOut)
 def increment_stat(increment_data : CaballeroSchema.CaballeroUpdateStat, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
-    print("Incrementando stat:", increment_data.stat)
     mapStats ={
         "reflejos":"ca_agility",
         "sabiduria":"ca_knowledge",
@@ -82,5 +87,8 @@ def increment_stat(increment_data : CaballeroSchema.CaballeroUpdateStat, db: Ses
             add_stat = CaballeroCRUD.update_stat(db, increment_data.ca_key, stat,  costo=costo)
     
     return add_stat
+
+
+
 
 

@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useContext, useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, AuthContext } from "./context/AuthContext";
 
 import Navbar from "./components/Navbar";
@@ -17,6 +17,11 @@ import "react-toastify/dist/ReactToastify.css";
 import CrearCaballero from "./pages/CrearCaballero";
 import ImageSelectorForm from "./components/CrearCaballero/ImageSelectorForm"
 import BackendDownPage from "./pages/BackendDown";
+import Batallas from "./components/Batalla/Batalla";
+import Batalla from "./components/Batalla/Batalla";
+import BatallaPublic from "./pages/Batalla";
+import RequireQuery from "./components/RequireQuery";
+
 import { API_URL } from "./config";
 
 function App() {
@@ -51,6 +56,33 @@ function App() {
 // Componente interno para usar context y controlar loading
 function InnerApp() {
   const { user, loading } = useContext(AuthContext);
+  const {caballero} = useContext(AuthContext);
+  const location = useLocation();
+
+    // rutas que no deben tener layout (wrapper)
+  const STANDALONE_PATHS = ["/Batalla"];
+  const isStandalone = STANDALONE_PATHS.includes(location.pathname);
+
+  // 🔓 Rama STANDALONE: NO layout, NO login requerido, NO bloqueo por `loading`
+  if (isStandalone) {
+    return (
+      <>
+        <ToastContainer />
+        <Routes>
+          <Route
+            path="/Batalla"
+            element={
+              <RequireQuery name="id" redirectTo="/?error=missing_id">
+                <BatallaPublic />
+              </RequireQuery>
+            }
+          />
+          {/* (opcional) fallback si llegan a otra ruta en este modo */}
+          <Route path="*" element={<UnknownPage />} />
+        </Routes>
+      </>
+    );
+  }
 
   // Mientras validamos usuario, mostramos loader (evita cualquier render de rutas públicas)
   if (loading) return(<Loading />);
@@ -91,6 +123,14 @@ function InnerApp() {
             element={
               <PrivateRoute>
                 <ImageSelectorForm />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/Batallas"
+            element={
+              <PrivateRoute>
+                <Batallas />
               </PrivateRoute>
             }
           />

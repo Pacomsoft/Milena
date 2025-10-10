@@ -6,22 +6,9 @@ import { onSubirStatAPI } from "../services/caballero";
 import caballerostats from "../assets/images/entrenar.png";
 import { createCaballero } from "../services/caballero";
 import { notify } from "./Notification";
+import { getBoostForStat } from "../services/boost";
+import { boStatMap } from "../services/habilidades";
 
-const boStatMap = {
-  "Velocidad": "velocidad",
-  "Fuerza": "fuerza",
-  "Sabiduría": "sabiduria",
-  "Precisión": "presicion",
-  "Presición": "presicion",
-  "Reflejos": "reflejos",
-  "Agilidad": "reflejos",
-  "Resistencia": "resistencia",
-  "Resistencia Psíquica": "resistenciap",
-  "Persistencia": "persistencia",
-  "Cosmo": "cosmo",
-  "Séptimo Sentido": "septimo",
-  "Vida Máxima": "vida",
-};
 
 const FormularioHabilidades = ({
   habilidadesData,
@@ -29,8 +16,7 @@ const FormularioHabilidades = ({
   oroInicial = 0,
   boosts = [],
   selectedDiv,
-  selectedDivZo,
-  onCrearCaballero
+  selectedDivZo
   
 }) => {
   const [loadingBtn, setLoadingBtn] = useState(false);
@@ -51,7 +37,7 @@ const FormularioHabilidades = ({
   useEffect(() => {
     if (!habilidadesData || habilidadesData.length === 0) return;
 
-    const initStats = habilidadesData.reduce((acc, h) => ({ ...acc, [h.key]: [h.nivel] }), {})
+    const initStats = habilidadesData.reduce((acc, h) => ({ ...acc, [h.key]: Number(h.nivel) }), {});
 
     setStats(initStats);
   }, [habilidadesData]); 
@@ -70,12 +56,10 @@ const FormularioHabilidades = ({
   };
 
   const applyIncrementLocal = (habilidad) => {
-    setBoost(false);
-    setStats({ ...stats, [habilidad.key]: stats[habilidad.key] + 1 });
+    setStats({...stats,[habilidad.key]: Number(stats[habilidad.key] ?? 0) + 1});
     setOro(oro - habilidad.costo);
     setPuntos(puntos - 1);
     setShowModal(false);
-    setBoost(true);
   };
 
   // Decremento local (solo si no existe caballero)
@@ -120,7 +104,8 @@ const FormularioHabilidades = ({
       setCaballero(caballeroData);
       setPuntos(caballeroData.habilidad);
       setOro(caballeroData.oro);
-      notify("success", "Haz aumentado tu "+habilidad.key+"!");                
+      const statName = Object.fromEntries(Object.entries(boStatMap).map(([k, v]) => [v, k]))[habilidad.key] || habilidad.key;
+      notify("success", "Haz aumentado tu "+statName+"!");                
       setShowModal(false);
     } catch (err) {
       notify("error", "Error subiendo stat: "+ err);
@@ -136,6 +121,7 @@ const handleCreateCaballero = async () => {
     alert("Debes gastar todos los puntos antes de crear tu caballero");
     return;
   }
+  console.log(stats);
   const payload = {
     nombre: username, // si tienes un input para el nombre
     id_avatar: user,
@@ -160,26 +146,6 @@ const handleCreateCaballero = async () => {
   }
 };
 
-
-
-
-  const getBoostForStat = (statKey) => {
-    const activeBoosts = boosts.filter(
-      (b) =>
-        (b.bo_type === "Deidad" && b.bo_origin === selectedDiv.di_key) ||
-        (b.bo_type === "Signo" && b.bo_origin === selectedDivZo.zo_key)
-    );
-
-    return activeBoosts
-      .filter((b) => boStatMap[b.bo_stat] === statKey)
-      .reduce((sum, b) => {
-        if (b.bo_unit === "%") {
-          return sum + (stats[statKey] * (Number(b.bo_quantity) / 100));
-        } else {
-          return sum + Number(b.bo_quantity);
-        }
-      }, 0);
-  };
 
   return (
     <div className="container" style={{ paddingTop: "1%" }}>
@@ -234,7 +200,7 @@ const handleCreateCaballero = async () => {
               </thead>
               <tbody>
                 {habilidadesData.map((h) => {
-                  const boostValue = getBoostForStat(h.key);
+                  const boostValue = getBoostForStat(h.key, boosts, selectedDiv, selectedDivZo, stats);
                   const totalValue = Math.floor(Number(stats[h.key] ?? 0));
 
                   return (
@@ -288,7 +254,7 @@ const handleCreateCaballero = async () => {
                               ? handleIncrementAPI(h)
                               : handleIncrementLocal(h)
                           }
-                          style={{display: h.costo > oro || puntos <= 0  || (totalValue >= h.max) ? "none":"block"}}
+                          style={{display: h.costo > oro || puntos <= 0  || (totalValue >= h.max) ? "none":"inline-block"}}
                         >
                           +
                         </Button>

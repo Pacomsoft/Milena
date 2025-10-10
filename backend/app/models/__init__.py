@@ -5,5 +5,6 @@ from .Zodiaco import Zodiaco
 from .Zonas import Zona
 from .Boost import Boost
 from .Niveles import Niveles
+from .Combate import Combate
 
-__all__ = ["Account", "Caballero", "Divinidad", "Zodiaco", "Zona", "Boost", "Niveles"]
+__all__ = ["Account", "Caballero", "Divinidad", "Zodiaco", "Zona", "Boost", "Niveles", "Combate"]

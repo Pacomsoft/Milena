@@ -1,6 +1,6 @@
 import { API_URL } from "../config";
 import { notify } from "../components/Notification";
-
+import { boStatMap } from "./habilidades";
 
 export async function getAllBoosts() {
   try {
@@ -42,3 +42,20 @@ export async function getBoost(id, token) {
   }
 }
 
+export const getBoostForStat = (statKey, boosts, selectedDiv, selectedDivZo, stats) => {
+    const activeBoosts = boosts.filter(
+      (b) =>
+        (b.bo_type === "Deidad" && b.bo_origin === selectedDiv.di_key) ||
+        (b.bo_type === "Signo" && b.bo_origin === selectedDivZo.zo_key)
+    );
+
+    return activeBoosts
+      .filter((b) => boStatMap[b.bo_stat] === statKey)
+      .reduce((sum, b) => {
+        if (b.bo_unit === "%") {
+          return sum + (stats[statKey] * (Number(b.bo_quantity) / 100));
+        } else {
+          return sum + Number(b.bo_quantity);
+        }
+      }, 0);
+  };

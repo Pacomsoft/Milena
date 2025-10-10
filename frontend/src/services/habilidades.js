@@ -26,3 +26,20 @@ export async function getCostoHabilidad(nivel) {
     return 999999999;
   }
 }
+
+
+export const boStatMap = {
+  "Velocidad": "velocidad",
+  "Fuerza": "fuerza",
+  "Sabiduría": "sabiduria",
+  "Precisión": "presicion",
+  "Presición": "presicion",
+  "Reflejos": "reflejos",
+  "Agilidad": "reflejos",
+  "Resistencia": "resistencia",
+  "Resistencia Psíquica": "resistenciap",
+  "Persistencia": "persistencia",
+  "Cosmo": "cosmo",
+  "Séptimo Sentido": "septimo",
+  "Vida Máxima": "vida",
+};

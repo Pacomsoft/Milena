@@ -54,6 +54,7 @@ export async function onSubirStatAPI(payload, token)
 }
 
 export async function createCaballero(payload, token) {
+  console.log("Creating caballero with payload:", payload);
   try {
     const url = `${API_URL}/caballeros/newplayer`;
     const res = await fetch(url, {

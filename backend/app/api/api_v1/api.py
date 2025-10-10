@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.api_v1 import Account, auth, Caballero, Divinidad, Zodiaco, Boost, Habilidades, server
+from app.api.api_v1 import Account, auth, Caballero, Divinidad, Zodiaco, Boost, Habilidades, server, Combate
 
 api_router = APIRouter()
 api_router.include_router(Account.router, prefix="/accounts", tags=["accounts"])
@@ -10,3 +10,4 @@ api_router.include_router(Zodiaco.router, prefix="/zodiaco", tags=["zodiaco"])
 api_router.include_router(Boost.router, prefix="/boost", tags=["boost"])
 api_router.include_router(Habilidades.router, prefix="/habilidades", tags=["habilidades"])
 api_router.include_router(server.router, prefix="/server", tags=["server"])
+api_router.include_router(Combate.router, prefix="/combate", tags=["combate"])

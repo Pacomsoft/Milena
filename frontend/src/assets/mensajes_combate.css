@@ -1,0 +1,210 @@
+:root {
+  --accion:  #fff;
+  --impacto: #fff;
+  --evade:   #fff;
+  --resiste: #fff;
+  --dioA:    #08a9b9!important;
+  --dioD:    #bfbebf;
+  --persist: #fff;
+  --muerte:  #374151;
+  --victor:  #f97316;
+  --empate:  #64748b;
+}
+
+.msg-line { margin: 6px 0; line-height: 1.35; font-size: 0.98rem; }
+.m-accion   { color: var(--accion); }
+.m-impacto  { color: var(--impacto); }
+.m-evade    { color: var(--evade); }
+.m-resiste  { color: var(--resiste); }
+.m-dialogoA { color: var(--dioA); }
+.m-dialogoD { color: var(--dioD); }
+.m-persist  { color: var(--persist); }
+.m-muerte   { color: var(--muerte); }
+.m-victoria { color: var(--victor); color: #fbbc06;
+    font-weight: bold;
+    font-style: italic;}
+.m-empate   { color: var(--empate); }
+.msg-line b { font-weight: normal; }
+
+.round-header {
+  margin: 12px 0 4px;
+  letter-spacing: .1em;
+  color: rgba(var(--bs-warning-rgb),var(--bs-text-opacity))!important;
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-family: 'Saintfont';
+}
+
+.log-container {
+  max-height: 70vh;
+  overflow: auto;
+  padding-right: 8px;
+}
+
+.batallaName {
+color: rgb(255 193 7) !important;
+    font-family: 'Saintfont';
+    font-size: 2rem !important;
+    font-weight: normal !important;
+    font-size: 1.2rem !important;
+}
+
+.vsTitle h1 {
+  color: #fbbc06 !important;
+  font-family: 'Saintfont';
+  font-size: 8rem;
+  text-shadow: 5px 0px 0px #212529;
+}
+
+.cosmic-vs {
+  font-family: "Cinzel Decorative", serif;
+  animation: glowPulse 2s infinite alternate;
+}
+
+@keyframes glowPulse {
+  from {
+    text-shadow: 0 0 10px #ffd900, 0 0 30px #ffcc00;
+  }
+  to {
+    text-shadow: 0 0 25px #ffd900, 0 0 60px #fff3b0;
+  }
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+}
+
+.evento {
+  animation: fadeInUp 0.6s ease both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ronda-header {
+  font-family: "Cinzel Decorative", serif;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.hp-ring {
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.cosmo-ring {
+  transition: stroke-dashoffset 0.6s ease;
+  filter: drop-shadow(0 0 4px #0dcaf0);
+}
+
+/* Efecto de daño crítico */
+@keyframes critPulse {
+  0% {
+    filter: drop-shadow(0 0 2px #ff0000);
+    stroke: #ff0000;
+  }
+  50% {
+    filter: drop-shadow(0 0 10px #ff0000);
+    stroke: #ff5555;
+  }
+  100% {
+    filter: drop-shadow(0 0 2px #ff0000);
+    stroke: #dc3545;
+  }
+}
+
+.critFlash {
+  animation: critPulse 0.6s ease-in-out 2;
+}
+
+/* Partículas del aura (cosmo alto) */
+@keyframes spinParticles {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.aura-particles {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  box-shadow: 0 0 20px 6px rgba(0, 255, 255, 0.5),
+    inset 0 0 20px 6px rgba(0, 255, 255, 0.3);
+  animation: spinParticles 5s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.auraActive {
+  filter: drop-shadow(0 0 12px #00ffff);
+}
+
+
+@keyframes critPulse {
+  0% { filter: drop-shadow(0 0 2px #ff0000); stroke: #ff0000; }
+  50% { filter: drop-shadow(0 0 10px #ff0000); stroke: #ff6666; }
+  100% { filter: drop-shadow(0 0 2px #ff0000); stroke: #dc3545; }
+}
+.critFlash {
+  animation: critPulse 0.6s ease-in-out 2;
+}
+
+@keyframes spinParticles {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.aura-particles {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 20px 5px rgba(0, 255, 255, 0.4),
+    inset 0 0 18px 5px rgba(0, 255, 255, 0.3);
+  animation: spinParticles 5s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+.auraActive {
+  filter: drop-shadow(0 0 10px #00ffff);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: -1;
+}
+
+.pj-text {
+  font-family: 'Saintfont', cursive;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.pj1{
+  
+  color: #08a9b9!important;
+}
+
+.pj2{
+  color: rgb(191 190 191) !important;
+}
+
+.dmg-text{
+  font-weight: bold;
+  color:#ffc107 !important;
+  font-size: 1.3rem;
+}
