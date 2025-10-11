@@ -148,7 +148,7 @@ const handleCreateCaballero = async () => {
 
 
   return (
-    <div className="container" style={{ paddingTop: "1%" }}>
+    <div className="container" style={{ paddingTop: "1%",    paddingRight: '0px', paddingLeft: '0px'  }}>
 
 
       <div

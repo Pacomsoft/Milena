@@ -5,6 +5,7 @@ import micaballero from '../assets/images/micaballero.png';
 import { AuthContext } from "../context/AuthContext";
 import { getBoostForStat } from "../services/boost";
 import { boStatMap } from "../services/habilidades";
+import { motion } from "framer-motion";
 
 const CaballeroPage = () => {
   const {caballero, boosts, deidad, signo} = useContext(AuthContext);
@@ -43,75 +44,150 @@ const CaballeroPage = () => {
 
   if (!caballero) return <div>Cargando...</div>;
 
-  return (
-    <div
-      className="row flex-lg-row-reverse align-items-center g-1 py-1 background-mobile container-base"
-      style={{
-        backgroundImage: `url(${micaballero})`,
-        backgroundSize: "60%",
+return (
+  <motion.div
+    className="row flex-lg-row-reverse align-items-center g-1 py-1 background-mobile container-base"
+    style={{
+      backgroundImage: `url(${micaballero})`,
+      backgroundSize: "60%",
+    }}
+    initial={{ opacity: 0, y: 30 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.8, ease: "easeOut" }}
+  >
+    <motion.div
+      className="col-lg-6"
+      style={{ alignSelf: "flex-start", marginLeft: "5%", marginRight: "5%" }}
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { staggerChildren: 0.05 },
+        },
       }}
     >
-      <div className="col-lg-6" style={{ alignSelf: "flex-start" }}>
-        <h3 className="text-gold">Datos Generales</h3>
-        <div className="stats-div">
-          {[
-            ["Nombre", caballero.nombre],
-            ["Signo", caballero.id_zona],
-            ["Nivel", caballero.nivel],
-            ["Estado", caballero.estado],
-            ["Vida", `${caballero.salud_actual}/${caballero.salud}`],
-            ["Experiencia", `${caballero.experiencia}/${caballero.experiencia}`],
-            ["Oro", caballero.oro],
-            ["Habilidad", caballero.habilidad],
-            ["Victorias", caballero.victorias],
-            ["Derrotas", caballero.derrotas],
-          ].map(([label, value], i) => (
-            <div className="row" key={i}>
-              <div className="col-6">
-                <label className="stats-text">{label}:</label>
-              </div>
-              <div className="col-6 col-text-right">
-                <span className="stats-text-value">{value}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+      {/* === DATOS GENERALES === */}
+<motion.h3
+  className="text-gold mt-4"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 1 }}
+>
+  {Array.from("Datos Generales").map((char, index) => (
+    <motion.span
+      key={index}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: index * 0.03 }}
+      className="text-gold mt-4"
 
-        <h3 className="text-gold">Estadísticas</h3>
-        <div className="stats-div">
-          {[
-            ["Fuerza", caballero.poder],
-            ["Resistencia", caballero.resistencia],
-            ["Resistencia Psíquica", caballero.resistencia_mental],
-            ["Velocidad", caballero.velocidad],
-            ["Precisión", caballero.precision],
-            ["Reflejos", caballero.agilidad],
-            ["Sabiduría", caballero.conocimiento],
-            ["Persistencia", caballero.persistencia],
-            ["Cosmo", caballero.cosmo],
-            ["Séptimo sentido", caballero.septimo_sentido],
-            ["Honor", caballero.honor],
-          ].map(([label, value], i) => (
-            <div className="row" key={i}>
-              <div className="col-6">
-                <label className="stats-text">{label}:</label>
-              </div>
-              <div className="col-6 col-text-right">
-                <span className="stats-text-value">
-                  {value+' '}
-                {getBoostForStat(boStatMap[label], boosts, selectedDiv, selectedDivZo, stats) > 0 && (
-                                <small className="text-alert-green">
-                                  (+{getBoostForStat(boStatMap[label], boosts, selectedDiv, selectedDivZo, stats).toFixed(2)})
-                                </small>
-                              )}
-                </span>                                              
-              </div>
+    >
+      {char}
+    </motion.span>
+  ))}
+</motion.h3>
+
+      <div className="stats-div">
+        {[
+          ["Nombre", caballero.nombre],
+          ["Signo", caballero.id_zona],
+          ["Nivel", caballero.nivel],
+          ["Estado", caballero.estado],
+          ["Vida", `${caballero.salud_actual}/${caballero.salud}`],
+          ["Experiencia", `${caballero.experiencia}/${caballero.experiencia}`],
+          ["Oro", caballero.oro],
+          ["Habilidad", caballero.habilidad],
+          ["Victorias", caballero.victorias],
+          ["Derrotas", caballero.derrotas],
+        ].map(([label, value], i) => (
+          <motion.div
+            key={i}
+            className="row"
+            variants={{
+              hidden: { opacity: 0, y: 10 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="col-6">
+              <label className="stats-text">{label}:</label>
             </div>
-          ))}
-        </div>
+            <div className="col-6 col-text-right">
+              <span className="stats-text-value">{value}</span>
+            </div>
+          </motion.div>
+        ))}
       </div>
-    </div>
-  );
+
+      {/* === ESTADÍSTICAS === */}
+      <motion.h3
+        className="text-gold mt-4"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        Estadísticas
+      </motion.h3>
+
+      <div className="stats-div">
+        {[
+          ["Fuerza", caballero.poder],
+          ["Resistencia", caballero.resistencia],
+          ["Resistencia Psíquica", caballero.resistencia_mental],
+          ["Velocidad", caballero.velocidad],
+          ["Precisión", caballero.precision],
+          ["Reflejos", caballero.agilidad],
+          ["Sabiduría", caballero.conocimiento],
+          ["Persistencia", caballero.persistencia],
+          ["Cosmo", caballero.cosmo],
+          ["Séptimo sentido", caballero.septimo_sentido],
+          ["Honor", caballero.honor],
+        ].map(([label, value], i) => (
+          <motion.div
+            key={i}
+            className="row"
+            variants={{
+              hidden: { opacity: 0, y: 10 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="col-6">
+              <label className="stats-text">{label}:</label>
+            </div>
+            <div className="col-6 col-text-right">
+              <span className="stats-text-value">
+                {value + " "}
+                {getBoostForStat(
+                  boStatMap[label],
+                  boosts,
+                  selectedDiv,
+                  selectedDivZo,
+                  stats
+                ) > 0 && (
+                  <small className="text-alert-green">
+                    (+
+                    {getBoostForStat(
+                      boStatMap[label],
+                      boosts,
+                      selectedDiv,
+                      selectedDivZo,
+                      stats
+                    ).toFixed(2)}
+                    )
+                  </small>
+                )}
+              </span>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  </motion.div>
+);
 };
 
 export default CaballeroPage;

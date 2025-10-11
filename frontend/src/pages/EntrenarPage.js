@@ -44,7 +44,7 @@ function Entrenar(){
 
     
     return(
-    <div className="p-4">
+    <div className="">
         <FormularioHabilidades boosts={boosts} selectedDiv={selectedDiv} selectedDivZo={selectedDivZo}  habilidadesData={habilidades} puntosIniciales={puntos} oroInicial={oro}/>        
     </div>        
 

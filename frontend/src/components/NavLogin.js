@@ -35,7 +35,7 @@ function NavLogin() {
 
     return(
             // Si no está logueado → mostrar formulario
-            <div className="flex-wrap align-items-center justify-content-between background-mobile"  style={{display:'inline-flex'}}>
+            <div className="flex-wrap align-items-center justify-content-between background-mobile"  style={{display:'inline-flex', marginBottom:'5%'}}>
               <a
                 href="/"
                 className="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
