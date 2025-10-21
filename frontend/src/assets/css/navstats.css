@@ -1,0 +1,81 @@
+.navstats-panel {
+  position: fixed;
+  top: 60px; /* ajusta según tu navbar */
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(6px);
+  border-bottom: 2px solid #ffcc00;
+  z-index: 2;
+  transition: transform 0.4s ease;
+}
+
+/* Banda dorada visible siempre en móvil */
+.navstats-toggle {
+  width: 100%;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 999; /* más alto que el panel para captar el clic */
+  background: transparent;
+  cursor: pointer;
+}
+
+.navstats-handle {
+  width: 60px;
+  height: 6px;
+  background: #ffcc00;
+  border-radius: 10px;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Espaciador: empuja el contenido hacia abajo */
+.navstats-spacer {
+  height: 225px;
+  transition: height 0.4s ease;
+}
+
+/* Móvil: animación de ocultar */
+@media (max-width: 1200px) {
+  .navstats-panel.closed {
+    transform: translateY(calc(-100% + 22px))!important;
+  }
+
+  .navstats-spacer.open {
+    height: 165px;
+  }
+
+  .navstats-spacer.closed {
+    height: 22px;
+  }
+}
+
+/* PC: sin toggle */
+@media (min-width: 1200px) {
+  .navstats-toggle {
+    display: none;
+  }
+
+  .horizontal-menu .navbar {
+    background: black;
+  }
+}
+
+@media (max-width: 1200px) {
+    .horizontal-menu .navbar {
+        width: 100%;
+        left: 0;
+        background: black;
+    }
+
+
+}

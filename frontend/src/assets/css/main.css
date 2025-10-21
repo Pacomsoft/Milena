@@ -23,16 +23,38 @@ body{
 .info-base 
 {
 width: auto;
-margin: auto;
+/* margin: auto; */
+margin:2px;
 }
 
-@media (max-width: 991.98px) {
+@media (max-width: 1200px) {
   .horizontal-menu .bottom-navbar {
     display: none;
   }
   .horizontal-menu .bottom-navbar.show {
     display: block !important;
   }
+     .background-mobile {
+        background-size: 90%!important;
+        background-position: bottom;
+    }
+      .col-text-right{
+        text-align: right;
+        
+    }
+
+    .stats-div {
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(3px);
+  overflow: hidden;           /* 👈 Si algo interno crece, se corta sin romper borde */
+  width: 90%;                /* 👈 Evita expansión lateral */
+  box-sizing: border-box;     /* 👈 Asegura que padding no sume al ancho total */
+}
 }
 
 .collapse {
@@ -160,8 +182,8 @@ a:hover {
 
 .square {
     position: relative;
-    height: 100px;
-    width: 100px;
+    height: 95px;
+    width: 95px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -183,7 +205,16 @@ a:hover {
 .text-gold {
   font-family: 'SaintFont', sans-serif;
   font-size: 1.8rem;
-  color: #ffcc00;
+  color: #ffcc07!important;
+  letter-spacing: 1.5px;
+  position: relative;
+  display: inline-block;
+}
+
+.text-gold-neon {
+  font-family: 'SaintFont', sans-serif;
+  font-size: 1.8rem;
+  color: #ffcc07!important;
   text-shadow:
     0 0 0px #ffd700cc,
     0 0 35px #ffd700aa,
@@ -298,7 +329,7 @@ h3{
     border-radius: 0px 0 30px 30px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 993) {
     .background-mobile {
         background-size: 90%!important;
         background-position: bottom;
@@ -647,4 +678,19 @@ h3{
   color: #00ff6a !important;
   text-shadow: 0 0 6px #00ff6a, 0 0 12px #00ff6a88;
   font-weight: bold;
+}
+
+.search-card {
+  box-shadow: none;
+  transition: all 0.3s ease;
+}
+.btn-outline-warning:hover {
+    color: #212529;
+    background-color: #7b7b7b75; 
+    /* border-color: #fbbc06; */
+}
+@media (max-width: 768px) {
+  .stats-div {
+    width: 90%; /* 👈 En pantallas pequeñas, ocupa todo el ancho */
+  }
 }

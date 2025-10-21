@@ -9,14 +9,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { motion } from "framer-motion";
 
 export default function CombateViewer({ events = [], payload = {} }) {
+  console.log(payload);
   const picker = useMemo(() => new UniquePicker(mensajes), []);
   const logRef = useRef(null);
   const [rendered, setRendered] = useState([]);
 
   const p1 = payload?.participants?.p1 || {};
   const p2 = payload?.participants?.p2 || {};
-  const maxHP1 = p1.ca_health || 100;
-  const maxHP2 = p2.ca_health || 100;
+  const p1_boosted = payload?.stats_mod?.p1 ||{}
+  const p2_boosted = payload?.stats_mod?.p2 ||{}
+
+  const maxHP1 = p1_boosted.ca_health || 100;
+  const maxHP2 = p2_boosted.ca_health || 100;
 
   const [hp1, setHp1] = useState(maxHP1);
   const [hp2, setHp2] = useState(maxHP2);
@@ -102,7 +106,7 @@ export default function CombateViewer({ events = [], payload = {} }) {
   >
     <div className="card bg-dark border-0 shadow-lg p-3">
       <motion.img
-        src={inicio}
+        src={payload?.pj1_img_principal || inicio}
         alt="PJ1"
         className="card-img-top rounded-4 mb-3"
         style={{ objectFit: "cover", height: "200px" }}
@@ -164,7 +168,7 @@ export default function CombateViewer({ events = [], payload = {} }) {
   >
     <div className="card bg-dark border-0 shadow-lg p-3">
       <motion.img
-        src={inicio}
+        src={payload?.pj2_img_principal || inicio}
         alt="PJ2"
         className="card-img-top rounded-4 mb-3"
         style={{ objectFit: "cover", height: "200px" }}
@@ -218,14 +222,14 @@ export default function CombateViewer({ events = [], payload = {} }) {
     const hpActP1 =
       ev.vars?.hp_act_p1 ??
       (ev.vars?.defensor === p1.ca_name ? ev.vars?.hp_act_defensor : ev.vars?.hp_act_atacante) ??
-      p1.ca_health_act ??
-      p1.ca_health;
+      p1_boosted.ca_health_act ??
+      p1_boosted.ca_health;
 
     const hpActP2 =
       ev.vars?.hp_act_p2 ??
       (ev.vars?.defensor === p2.ca_name ? ev.vars?.hp_act_defensor : ev.vars?.hp_act_atacante) ??
-      p2.ca_health_act ??
-      p2.ca_health;
+      p2_boosted.ca_health_act ??
+      p2_boosted.ca_health;
 
     const cosmoActP1 =
       ev.vars?.cosmo_act_p1 ??
@@ -242,8 +246,8 @@ export default function CombateViewer({ events = [], payload = {} }) {
       0;
 
     // Totales y porcentajes
-    const hpPct1 = Math.max(0, Math.min(100, (hpActP1 / (p1.ca_health || 1)) * 100));
-    const hpPct2 = Math.max(0, Math.min(100, (hpActP2 / (p2.ca_health || 1)) * 100));
+    const hpPct1 = Math.max(0, Math.min(100, (hpActP1 / (p1_boosted.ca_health || 1)) * 100));
+    const hpPct2 = Math.max(0, Math.min(100, (hpActP2 / (p2_boosted.ca_health || 1)) * 100));
     const cosmoPct1 = Math.max(0, Math.min(100, (cosmoActP1 / (p1.ca_cosmo || 1)) * 100));
     const cosmoPct2 = Math.max(0, Math.min(100, (cosmoActP2 / (p2.ca_cosmo || 1)) * 100));
 
@@ -290,7 +294,7 @@ export default function CombateViewer({ events = [], payload = {} }) {
     </svg>
 
     <motion.img
-      src={inicio}
+      src={payload?.pj1_img_principal || inicio}
       alt="pj1"
       className="rounded-circle shadow position-relative"
       style={{
@@ -359,7 +363,7 @@ export default function CombateViewer({ events = [], payload = {} }) {
     </svg>
 
     <motion.img
-      src={inicio}
+      src={payload?.pj2_img_principal || inicio}
       alt="pj2"
       className="rounded-circle shadow position-relative"
       style={{
@@ -636,7 +640,7 @@ export default function CombateViewer({ events = [], payload = {} }) {
       ></motion.div>
 
       <motion.img
-        src={derrota}
+        src={payload?.perdedor_img || derrota}
         className="card-img-top rounded-4 mb-3 position-relative"
         style={{
           height: "200px",
@@ -671,7 +675,12 @@ export default function CombateViewer({ events = [], payload = {} }) {
           type: "tween",
         }}
       >
-        Azteca ha sido derrotado...
+        <p className="text-danger fw-bold">
+          {payload?.perdedor_msg?.trim()
+            ? payload.perdedor_msg
+            : `¡${payload?.perdedor ?? ''} ha sido derrotado...`}
+        </p>
+              
       </motion.p>
     </motion.div>
   </motion.div>
@@ -722,7 +731,7 @@ export default function CombateViewer({ events = [], payload = {} }) {
       ></motion.div>
 
       <motion.img
-        src={victoria}
+        src={payload?.ganador_img || victoria}
         className="card-img-top rounded-4 mb-3 position-relative"
         style={{
           height: "200px",
@@ -758,7 +767,11 @@ export default function CombateViewer({ events = [], payload = {} }) {
           type: "tween",
         }}
       >
-        ¡Mileena ha ganado la batalla!
+        <p className="text-danger fw-bold">
+          {payload?.ganador_msg?.trim()
+            ? payload.ganador_msg
+            : `¡${payload?.ganador ?? ''} ha ganado el combate...`}
+        </p>
       </motion.p>
     </motion.div>
   </motion.div>

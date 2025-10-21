@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field,  model_validator
+from pydantic import BaseModel, Field,  model_validator, validator
 from datetime import datetime
 from typing import Optional
 
@@ -33,11 +33,20 @@ class CaballeroBase(BaseModel):
     # WR
     ca_win: int = Field(0, alias="victorias")
     ca_loss: int = Field(0, alias="derrotas")
+    #Preferencias de combate
+    ca_msg_win: str = Field(None, alias="mensaje_victoria")
+    ca_msg_loss:str =  Field(None, alias="mensaje_derrota")
+    ca_img_main:str = Field(None, alias="imagen_principal")
+    ca_img_win:str = Field(None, alias="imagen_victoria")
+    ca_img_loss:str = Field(None, alias="imagen_derrota") 
 
     # zona y estado
     ca_zon_key_act: int = Field(1, alias="zona_actual")
     ca_status: str = Field("Ready", alias="estado")
     ca_comments: Optional[str] = Field(None, alias="comentarios")
+    zon_name: Optional[str] = Field(None, alias="zona")
+    zo_name: Optional[str] = Field(None, alias="signo_name")
+    di_name: Optional[str] = Field(None, alias="divinidad_name")
 
 class CaballeroUpdate(BaseModel): 
     ca_velocity: Optional[int] = None 
@@ -116,3 +125,46 @@ class CaballeroOut(CaballeroBase):
         #orm_mode = True
         from_attributes=True
         populate_by_name  = True
+
+class CaballeroContrincante(BaseModel):
+    id: int
+    nombre: str
+    nivel: int
+    experiencia: int
+    conocimiento: int
+    salud: int
+    cosmo: int
+    poder: int
+    resistencia: int
+    velocidad: int
+    precision: int
+    agilidad: int
+    resistencia_mental: int
+    persistencia: int
+    septimo_sentido: int
+    signo_name: str
+    divinidad_name: str
+    imagen_principal:str
+
+class BuscarContrincanteIn(BaseModel):
+    nombre: Optional[str] = None
+    nivel: Optional[int] = None
+    signo: Optional[str] = None
+    deidad: Optional[str] = None
+    zona: int = 0
+    account: int = 0
+    nivel_act: int= 0
+
+    # 🧙‍♂️ Validador mágico: convierte "" → None
+    @validator("nombre", "signo", "deidad", pre=True)
+    def empty_str_to_none(cls, v):
+        return v or None
+
+    @validator("nivel", pre=True)
+    def empty_str_to_none_int(cls, v):
+        if v in (None, ""):
+            return None
+        try:
+            return int(v)
+        except (ValueError, TypeError):
+            return None

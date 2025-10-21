@@ -9,6 +9,7 @@ from datetime import datetime
 from app.operations.entrenar import *
 from app.operations.combate import combate
 from app.models import Caballero as CaballeroModel
+from app.models import Boost as BoostModel
 from pydantic import BaseModel
 from app.models import Combate as CombateModel
 from app.schemas import Combate as CombateSchema
@@ -29,6 +30,7 @@ class FightRequest(BaseModel):
 def simular_combate(req: FightRequest, db: Session = Depends(get_db)):
     try:
         p1 = db.query(CaballeroModel).filter(CaballeroModel.ca_key == req.p1_id).first()
+        
         if req.tipo == "duelo":            
             p2 = db.query(CaballeroModel).filter(CaballeroModel.ca_key == req.p2_id).first()
 
@@ -53,15 +55,28 @@ def simular_combate(req: FightRequest, db: Session = Depends(get_db)):
                 "ca_seventh_sense": c.ca_seventh_sense,
                 "ca_seventh_sense_act": c.ca_seventh_sense_act,
                 "ca_level": c.ca_level,
-                "ca_gold": c.ca_gold
+                "ca_gold": c.ca_gold,
+                "ca_img_win":c.ca_img_win,
+                "ca_img_loss":c.ca_img_loss,
+                "ca_img_main":c.ca_img_main,
+                "ca_msg_win":c.ca_msg_win,
+                "ca_msg_loss":c.ca_msg_loss
 
             }
+        
+        
+        
+        p1_boosts = db.query(BoostModel).filter(((BoostModel.bo_type == 'Deidad') & (BoostModel.bo_origin == p1.ca_di_key)) | ((BoostModel.bo_type=='Signo') & (BoostModel.bo_origin==p1.ca_zo_key))).all()
+        
+        p2_boosts = db.query(BoostModel).filter(((BoostModel.bo_type == 'Deidad') & (BoostModel.bo_origin == p2.ca_di_key)) | ((BoostModel.bo_type=='Signo') & (BoostModel.bo_origin==p2.ca_zo_key))).all()
+        
+        
 
         p1_dict = to_dict(p1)
         p2_dict = to_dict(p2)
 
         # 1) correr combate → incluye events con template_index y templates.version
-        resultado = combate(p1_dict, p2_dict, rondas=25)
+        resultado = combate(p1_dict, p2_dict, p1_boosts, p2_boosts, rondas=25)
 
         # 2) armar payload para persistir (snapshot completo)
         payload = {
@@ -71,6 +86,15 @@ def simular_combate(req: FightRequest, db: Session = Depends(get_db)):
             "final_stats":  resultado.get("final_stats"),
             "ganador":      resultado.get("ganador"),
             "perdedor":     resultado.get("perdedor"),
+
+            "pj1_img_principal": resultado.get("pj1_img_principal"),
+            "pj2_img_principal": resultado.get("pj2_img_principal"),
+
+            "ganador_msg": resultado.get("ganador_msg"),
+            "ganador_img": resultado.get("ganador_img"),
+            "perdedor_msg": resultado.get("perdedor_msg"),
+            "perdedor_img": resultado.get("perdedor_img"),
+
             "motivo":       resultado.get("motivo"),
             "rng_seed":     resultado.get("rng_seed_battle"),
             "templates":    resultado.get("templates", {"version": "pack-v1"}),

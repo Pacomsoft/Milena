@@ -47,8 +47,13 @@ def calcular_dano(ofensiva, defensiva, s=10.0, dificultad=2.0):
 # =========================================
 # Modificadores de stats
 # =========================================
-def aplicar_modificadores(s: Dict):
+def aplicar_modificadores(s: Dict, boosts):
     s = s.copy()
+
+    #Asigna el boosts por deidad:
+    print(boosts)
+    #Asigna el boost por signo
+    print(boosts)
     # Fuerza buffea resistencias
     s["ca_resistance"] += s["ca_power"] * 0.10
     s["ca_psy_resistance"] += s["ca_power"] * 0.10
@@ -85,10 +90,10 @@ def ganador_iniciativa(v1, v2, s=10.0):
     p1_win = sigmoid_probability(diff, s)
     return random.random() <= p1_win
 
-def combate(p1: Dict, p2: Dict, rondas=5):
+def combateOLD(p1: Dict, p2: Dict, p1_boosts, p2_boosts, rondas=5):
     log = []
-    stats1 = aplicar_modificadores(p1)
-    stats2 = aplicar_modificadores(p2)
+    stats1 = aplicar_modificadores(p1, p1_boosts)
+    stats2 = aplicar_modificadores(p2, p2_boosts)
 
     for r in range(1, rondas+1):
         log.append(f"\n--- Ronda {r} ---")

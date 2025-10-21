@@ -50,6 +50,13 @@ class Caballero(Base):
     ca_win = Column(Integer, nullable=False, default=0) #Cantidad de victorias
     ca_loss = Column(Integer, nullable=False, default=0) #Cantidad de derrotas
 
+    #Preferencias de combate
+    ca_msg_win = Column(String(200), nullable=True, default="Ha sido un honor pelear contigo...Sin embargo, ¡Solo uno podía salir con la victoria!")
+    ca_msg_loss = Column(String(200), nullable=True, default="La derrota es el mayor aprendizaje que puede ofrecerte la vida ¡La próxima será diferente!")
+    ca_img_main = Column(String(5000), nullable=True)
+    ca_img_win = Column(String(5000), nullable=True)
+    ca_img_loss = Column(String(5000), nullable=True)
+
     #Atributos de status:
     ca_zon_key_act = Column(Integer, ForeignKey("Zonas.zon_key"), nullable=False, default=1) #Zona en la que se encuentra el caballero
     ca_status = Column(String(30), nullable=False, default="Ready") #Status de acciones del caballero
@@ -58,4 +65,5 @@ class Caballero(Base):
     ca_lastaction = Column(DateTime, nullable=True, default=datetime.utcnow) #Última acción ejecutada por el caballero
     ca_status_player = Column(Boolean, nullable=False, default=True) #Status del jugador, activo o inactivo.
     ca_comments = Column(Text, nullable=True) #Comentarios
+
 

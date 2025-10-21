@@ -1,11 +1,75 @@
+import select
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from app import models
 from app.schemas.Caballero import *
 from datetime import datetime
+from sqlalchemy.sql import func
 
 def get_caballeros_by_account(db: Session, account_id: int) -> List[models.Caballero]:
     return db.query(models.Caballero).filter(models.Caballero.ca_ac_key == account_id).all()
+
+def get_contrincantes(
+        db: Session,
+        nombre: Optional[str] = None,
+        nivel: Optional[int] = None,
+        signo: Optional[str] = None,
+        deidad: Optional[str] = None,
+        zona: int = 1,
+        account: int = 0,
+        nivel_act: int = 0
+    ) -> List[dict]:
+    query = (
+            db.query(
+                models.Caballero.ca_key.label("id"),
+                models.Caballero.ca_name.label("nombre"),
+                models.Caballero.ca_level.label("nivel"),
+                models.Caballero.ca_experience.label("experiencia"),
+                models.Caballero.ca_knowledge.label("conocimiento"),
+                models.Caballero.ca_health.label("salud"),
+                models.Caballero.ca_cosmo.label("cosmo"),
+                models.Caballero.ca_power.label("poder"),
+                models.Caballero.ca_resistance.label("resistencia"),
+                models.Caballero.ca_velocity.label("velocidad"),
+                models.Caballero.ca_precision.label("precision"),
+                models.Caballero.ca_agility.label("agilidad"),
+                models.Caballero.ca_psy_resistance.label("resistencia_mental"),
+                models.Caballero.ca_persistence.label("persistencia"),
+                models.Caballero.ca_seventh_sense.label("septimo_sentido"),
+                models.Zodiaco.zo_name.label("signo_name"),
+                models.Divinidad.di_name.label("divinidad_name"),
+                models.Caballero.ca_img_main.lavbel("imagen_principal")
+            )
+            .join(models.Zodiaco, models.Caballero.ca_zo_key == models.Zodiaco.zo_key)
+            .join(models.Divinidad, models.Caballero.ca_di_key == models.Divinidad.di_key)
+    )
+
+    query = (
+        query
+        .filter(models.Caballero.ca_status_player == 1)  # por ejemplo, activo
+        .filter((models.Caballero.ca_health_act * 100) / models.Caballero.ca_health > 20)  # más del 20% de vida
+        .filter(models.Caballero.ca_zon_key_act == zona)  # misma zona
+        .filter(models.Caballero.ca_ac_key != account)    # no el mismo usuario
+    )
+
+    # ===== Filtros opcionales =====
+    if nombre:
+        query = query.filter(models.Caballero.ca_name.ilike(f"%{nombre}%"))
+    if nivel:
+        query = query.filter(models.Caballero.ca_level == nivel)
+    else:
+        query = query.filter(models.Caballero.ca_level == nivel_act)
+    if signo:
+        query = query.filter(models.Zodiaco.zo_name.ilike(f"%{signo}%"))
+    if deidad:
+        query = query.filter(models.Divinidad.di_name.ilike(f"%{deidad}%"))
+    
+    query = query.order_by(func.random()).limit(1)
+    result = query.first()
+        # Ejecutar consulta
+
+        # Convertir en lista de dicts (para que sea compatible con .mappings())
+    return [result]
 
 def create_caballero(db: Session, cab_data):
     # Construimos el diccionario con todos los campos posibles

@@ -4,6 +4,22 @@ from asyncio import events
 import random, math
 from typing import Dict, Any, List
 
+STATS_MAP = {
+  "Velocidad": "ca_velocity",
+  "Fuerza": "ca_power",
+  "Sabiduría": "ca_knowledge",
+  "Precisión": "ca_precision",
+  "Presición": "ca_precision",
+  "Reflejos": "ca_agility",
+  "Agilidad": "ca_agility",
+  "Resistencia": "ca_resistance",
+  "Resistencia Psíquica": "ca_psy_resistance",
+  "Persistencia": "ca_persistence",
+  "Cosmo": "ca_cosmo_act",
+  "Séptimo Sentido": "ca_sevent_sense_act",
+  "Vida Máxima": "ca_health_act",
+}
+
 
 TPL_SIZE = {
     "ataque_hit": 25,
@@ -80,7 +96,26 @@ def check_persistencia(persistencia: float) -> bool:
     chance = min(1.0, PERSISTENCIA_BASE * (persistencia / 100.0))
     return random.random() <= chance
 
-def aplicar_modificadores(s: Dict[str, Any]) -> Dict[str, Any]:
+def aplicar_modificadores(s: Dict[str, Any], boosts) -> Dict[str, Any]:
+    for b in boosts:
+        
+        if b.get('bo_unit') == '%':
+            s[b.get('bo_stat')] += s[b.get('bo_stat')] * ((b.get('bo_quantity'))/100)
+            if b.get('bo_stat') == 'ca_health_act':
+                s['ca_health'] += s['ca_health'] * ((b.get('bo_quantity'))/100)
+            if b.get('bo_stat') == 'ca_cosmo_act':
+                s['ca_cosmo'] += s['ca_cosmo'] * ((b.get('bo_quantity'))/100)    
+            if b.get('bo_stat') == 'ca_seventh_sense_act':
+                s['ca_seventh_sense'] += s['ca_seventh_sense'] * ((b.get('bo_quantity'))/100)    
+        else:
+            s[b.get('bo_stat')] += s[b.get('bo_stat')]+b.get('bo_quantity')
+            if b.get('bo_stat') == 'ca_health_act':
+                s['ca_health'] += s['ca_health'] + ((b.get('bo_quantity')))
+            if b.get('bo_stat') == 'ca_cosmo_act':
+                s['ca_cosmo'] += s['ca_cosmo'] + ((b.get('bo_quantity')))
+            if b.get('bo_stat') == 'ca_seventh_sense_act':
+                s['ca_seventh_sense'] += s['ca_seventh_sense'] + ((b.get('bo_quantity')))
+
     s = s.copy()
     s["ca_resistance"] += s["ca_power"] * 0.10
     s["ca_psy_resistance"] += s["ca_power"] * 0.10
@@ -102,7 +137,17 @@ def aplicar_modificadores(s: Dict[str, Any]) -> Dict[str, Any]:
 # ===============================
 # Motor de combate → eventos para FE
 # ===============================
-def combate(p1: Dict[str, Any], p2: Dict[str, Any], rondas: int = RONDAS_BATALLA) -> Dict[str, Any]:
+def combate(p1: Dict[str, Any], p2: Dict[str, Any],p1_boosts, p2_boosts, rondas: int = RONDAS_BATALLA) -> Dict[str, Any]:
+    
+    def to_dict_boost(boosts):
+        boostsList = []        
+        for b in boosts:
+            boostsList.append({"bo_key":b.bo_key, "bo_unit":b.bo_unit, "bo_quantity":b.bo_quantity, "bo_stat":STATS_MAP.get(b.bo_stat)})
+        return boostsList
+    
+    p1_boosts_list = to_dict_boost(p1_boosts)
+    p2_boosts_list = to_dict_boost(p2_boosts)
+
     rondas = RONDAS_BATALLA
     events: List[Dict[str, Any]] = []
     debug: Dict[str, Any] = {
@@ -116,8 +161,8 @@ def combate(p1: Dict[str, Any], p2: Dict[str, Any], rondas: int = RONDAS_BATALLA
     dmg_total_p2 = 0
 
     # Aplicar modificadores
-    stats1 = aplicar_modificadores(p1)
-    stats2 = aplicar_modificadores(p2)
+    stats1 = aplicar_modificadores(p1, p1_boosts_list)
+    stats2 = aplicar_modificadores(p2, p2_boosts_list)
     debug["stats_modificados"] = {"p1": stats1.copy(), "p2": stats2.copy()}
 
     # Por reproducibilidad de plantillas en FE (opcional)
@@ -305,16 +350,15 @@ def combate(p1: Dict[str, Any], p2: Dict[str, Any], rondas: int = RONDAS_BATALLA
     ganador = None
     perdedor = None
     motivo = None
-
     if stats1["ca_health_act"] <= 0 and stats2["ca_health_act"] > 0:
-        ganador, perdedor, motivo, ganadorClass, perdedorClass = p2["ca_name"], p1["ca_name"], "KO", "pj2", "pj1"
+        ganador, perdedor, motivo, ganadorClass, perdedorClass, ganador_img, ganador_text, perdedor_img, perdedor_text = p2["ca_name"], p1["ca_name"], "KO", "pj2", "pj1", p2["ca_img_win"], p2["ca_msg_win"],  p1["ca_img_loss"], p1["ca_msg_loss"]
     elif stats2["ca_health_act"] <= 0 and stats1["ca_health_act"] > 0:
-        ganador, perdedor, motivo, ganadorClass, perdedorClass = p1["ca_name"], p2["ca_name"], "KO", "pj1", "pj2"
+        ganador, perdedor, motivo, ganadorClass, perdedorClass, ganador_img, ganador_text, perdedor_img, perdedor_text = p1["ca_name"], p2["ca_name"], "KO", "pj1", "pj2", p1["ca_img_win"], p1["ca_msg_win"],  p2["ca_img_loss"], p2["ca_msg_loss"]
     else:
         if dmg_total_p1 > dmg_total_p2:
-            ganador, perdedor, motivo, ganadorClass, perdedorClass = p1["ca_name"], p2["ca_name"], "daño acumulado", "pj1", "pj2"
+            ganador, perdedor, motivo, ganadorClass, perdedorClass, ganador_img, ganador_text, perdedor_img, perdedor_text = p1["ca_name"], p2["ca_name"], "daño acumulado", "pj1", "pj2", p1["ca_img_win"], p1["ca_msg_win"],  p2["ca_img_loss"], p2["ca_msg_loss"]
         elif dmg_total_p2 > dmg_total_p1:
-            ganador, perdedor, motivo, ganadorClass, perdedorClass = p2["ca_name"], p1["ca_name"], "daño acumulado", "pj2", "pj1"
+            ganador, perdedor, motivo, ganadorClass, perdedorClass, ganador_img, ganador_text, perdedor_img, perdedor_text = p2["ca_name"], p1["ca_name"], "daño acumulado", "pj2", "pj1", p2["ca_img_win"], p2["ca_msg_win"],  p1["ca_img_loss"], p1["ca_msg_loss"]
 
     # Evento final
     if ganador:
@@ -351,8 +395,14 @@ def combate(p1: Dict[str, Any], p2: Dict[str, Any], rondas: int = RONDAS_BATALLA
             "p1": {"nombre": p1["ca_name"], "salud_final": final_p1, "daño_total": dmg_total_p1},
             "p2": {"nombre": p2["ca_name"], "salud_final": final_p2, "daño_total": dmg_total_p2}
         },
+        "pj1_img_principal": p1["ca_img_main"],
+        "pj2_img_principal":p2["ca_img_main"],
         "ganador": ganador,
+        "ganador_msg": ganador_text,
+        "ganador_img": ganador_img,
         "perdedor": perdedor,
+        "perdedor_msg":perdedor_text,
+        "perdedor_img":perdedor_img,
         "motivo": motivo,
         "rng_seed_battle": battle_seed,
         "templates": {"version": "pack-v1"}  # ← ponle el hash/versión que uses

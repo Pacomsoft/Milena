@@ -71,7 +71,7 @@ return (
     >
       {/* === DATOS GENERALES === */}
 <motion.h3
-  className="text-gold mt-4"
+  className="text-gold"
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ duration: 1 }}
@@ -82,7 +82,7 @@ return (
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: index * 0.03 }}
-      className="text-gold mt-4"
+      className="text-gold"
 
     >
       {char}
@@ -124,7 +124,7 @@ return (
 
       {/* === ESTADÍSTICAS === */}
       <motion.h3
-        className="text-gold mt-4"
+        className="text-gold"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}

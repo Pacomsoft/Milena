@@ -2,7 +2,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, AuthContext } from "./context/AuthContext";
-
+import Logout from "./pages/Logout";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Footer from "./components/Footer";
@@ -21,7 +21,7 @@ import Batallas from "./components/Batalla/Batalla";
 import Batalla from "./components/Batalla/Batalla";
 import BatallaPublic from "./pages/Batalla";
 import RequireQuery from "./components/RequireQuery";
-
+import Coliseo from "./pages/Coliseo";
 import { API_URL } from "./config";
 
 function App() {
@@ -134,9 +134,13 @@ function InnerApp() {
               </PrivateRoute>
             }
           />
+          <Route path="/Coliseo" element={<PrivateRoute> <Coliseo /> </PrivateRoute>} />
+          <Route path="/logout" element={<PrivateRoute> <Logout /> </PrivateRoute>} />
+
           
           {/* Ruta catch-all para páginas no definidas */}
           <Route path="*" element={<UnknownPage />} />
+
         </Routes>
       </div>
       <Footer />
@@ -162,7 +166,12 @@ function PrivateRoute({ children }) {
 
   if (!user) return <Navigate to="/" replace />;
   if (caballero === undefined) return <Loading />; // todavía cargando
-  if (caballero === null) return <ImageSelectorForm />;
+  //if (caballero === null) return <ImageSelectorForm />;
+  if(caballero === null){
+     if (window.location.pathname !== "/logout") {
+      return <ImageSelectorForm />;
+    }
+  }
   return children;
 }
 export { App, InnerApp };
