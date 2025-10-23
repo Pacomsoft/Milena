@@ -458,6 +458,7 @@ export default function CombateViewer({ events = [], payload = {} }) {
           {payload?.final_stats?.p1?.salud_final ?? 0}
         </span>
       </p>
+      
     </motion.div>
 
     {/* DERECHA (p2) */}
@@ -580,202 +581,157 @@ export default function CombateViewer({ events = [], payload = {} }) {
 </motion.div>
 
 
-        {/* ===== FINAL ===== */}
-{/* ===== FINAL ===== */}
 <motion.div
   className="row mt-5 g-4 justify-content-center"
-  style={{
-    width: "100%",
-    margin: "0 auto",
-  }}
+  style={{ width: "100%", margin: "0 auto" }}
   initial={{ opacity: 0, y: 100, scale: 0.95 }}
   whileInView={{ opacity: 1, y: 0, scale: 1 }}
   viewport={{ once: true }}
   transition={{ duration: 0.8, ease: "easeOut" }}
 >
-
-  {/* DERROTA */}
+  {/* ===== DERROTA ===== */}
   <motion.div
     className="col-12 col-md-6"
-    initial={{ opacity: 0, x: -120, rotate: -5 }}
-    whileInView={{ opacity: 1, x: 0, rotate: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+    initial={{ opacity: 0, x: -100 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.8, delay: 0.2 }}
   >
-    <motion.div
-      className="card bg-dark text-center shadow-lg p-3 h-100 position-relative overflow-hidden"
+    <div
+      className="card text-center shadow-lg p-4 h-100 position-relative overflow-hidden"
       style={{
-        border: "1px solid rgba(255,0,0,0.3)",
-        boxShadow: "0 0 20px rgba(255,0,0,0.25)",
+        border: "1px solid rgba(255,80,80,0.25)",
         background:
-          "linear-gradient(180deg, rgba(30,0,0,0.85) 0%, rgba(10,0,0,0.9) 100%)",
+          "linear-gradient(160deg, rgba(15,0,0,0.95) 0%, rgba(45,0,0,0.85) 100%)",
+        color: "#e1dada",
+        fontFamily: "'Cinzel', serif",
       }}
-      whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(255,0,0,0.3)" }}
-      transition={{ duration: 0.4 }}
     >
-      {/* Aura roja pulsante */}
-      <motion.div
+      {/* Luz interior roja tenue */}
+      <div
         style={{
           position: "absolute",
-          top: "50%",
-          left: "50%",
-          width: "200px",
-          height: "200px",
-          borderRadius: "50%",
+          inset: 0,
           background:
-            "radial-gradient(circle, rgba(255,0,0,0.3) 0%, rgba(255,0,0,0) 70%)",
-          transform: "translate(-50%, -50%)",
-          filter: "blur(20px)",
+            "radial-gradient(circle at center, rgba(255,0,0,0.08), transparent 70%)",
           zIndex: 0,
         }}
-        animate={{
-          scale: [0.8, 1.2, 0.8],
-          opacity: [0.6, 1, 0.6],
-        }}
-        transition={{
-          duration: 2.8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      ></motion.div>
-
-      <motion.img
+      />
+      <img
         src={payload?.perdedor_img || derrota}
-        className="card-img-top rounded-4 mb-3 position-relative"
+        alt="Perdedor"
+        className="rounded-3 mb-3 position-relative"
         style={{
           height: "200px",
           objectFit: "cover",
-          border: "1px solid rgba(255,255,255,0.08)",
+          border: "1px solid rgba(255,255,255,0.1)",
           zIndex: 1,
         }}
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
       />
-
-      <motion.p
-        className="fw-bold text-danger mb-0 position-relative"
+      <h6
+        className="fw-semibold mb-3"
         style={{
-          fontSize: "1.1rem",
-          textShadow: "#550000 0px 0px 10px",
-          letterSpacing: "1px",
-          zIndex: 2,
-        }}
-        animate={{
-          textShadow: [
-            "0 0 15px #ff0000",
-            "0 0 35px #ff0000",
-            "0 0 15px #ff0000",
-          ],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
-          type: "tween",
+          color: "#ff5555",
+          textShadow: "0 0 10px rgba(255,0,0,0.3)",
         }}
       >
-        <p className="text-danger fw-bold">
-          {payload?.perdedor_msg?.trim()
-            ? payload.perdedor_msg
-            : `¡${payload?.perdedor ?? ''} ha sido derrotado...`}
-        </p>
-              
-      </motion.p>
-    </motion.div>
+        {payload?.perdedor_msg?.trim()
+          ? payload.perdedor_msg
+          : `¡${payload?.perdedor ?? ""} ha sido derrotado!`}
+      </h6>
+
+      <div style={{ fontSize: "0.95rem", lineHeight: "1.6", zIndex: 1 }}>
+        {payload?.oro_robado && (
+          <p className="mb-0 text-danger">Oro perdido: -{payload.oro_robado}</p>
+        )}
+        {payload?.recompensas?.hab_perdedor && (
+          <p className="mb-0 text-secondary">
+            Puntos de habilidad: +{payload.recompensas.hab_perdedor}
+          </p>
+        )}
+        {payload?.recompensas?.exp_perdedor && (
+          <p className="mb-0 text-secondary">
+            Experiencia: +{payload.recompensas.exp_perdedor}
+          </p>
+        )}
+      </div>
+    </div>
   </motion.div>
 
-  {/* VICTORIA */}
+  {/* ===== VICTORIA ===== */}
   <motion.div
     className="col-12 col-md-6"
-    initial={{ opacity: 0, x: 120, rotate: 5 }}
-    whileInView={{ opacity: 1, x: 0, rotate: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+    initial={{ opacity: 0, x: 100 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.8, delay: 0.3 }}
   >
-    <motion.div
-      className="card bg-dark text-center shadow-lg p-3 h-100 position-relative overflow-hidden"
+    <div
+      className="card text-center shadow-lg p-4 h-100 position-relative overflow-hidden"
       style={{
-        border: "1px solid rgb(255 212 0 / 30%)",
-        boxShadow: "0 0 25px rgba(255,200,0,0.25)",
+        border: "1px solid rgba(255,215,0,0.3)",
         background:
-          "linear-gradient(rgb(95 83 1 / 80%) 0%, rgb(41 33 0 / 90%) 100%)",
+          "linear-gradient(160deg, rgba(20,15,0,0.95) 0%, rgba(70,60,0,0.85) 100%)",
+        color: "#f3e8a3",
+        fontFamily: "'Cinzel', serif",
       }}
-      whileHover={{ scale: 1.03, boxShadow: "0 0 35px rgba(255,215,0,0.3)" }}
-      transition={{ duration: 0.4 }}
     >
-      {/* Aura dorada pulsante */}
-      <motion.div
+      <div
         style={{
           position: "absolute",
-          top: "50%",
-          left: "50%",
-          width: "200px",
-          height: "200px",
-          borderRadius: "50%",
+          inset: 0,
           background:
-            "radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0) 70%)",
-          transform: "translate(-50%, -50%)",
-          filter: "blur(20px)",
+            "radial-gradient(circle at center, rgba(255,215,0,0.08), transparent 70%)",
           zIndex: 0,
         }}
-        animate={{
-          scale: [0.8, 1.3, 0.8],
-          opacity: [0.6, 1, 0.6],
-        }}
-        transition={{
-          duration: 2.8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      ></motion.div>
-
-      <motion.img
+      />
+      <img
         src={payload?.ganador_img || victoria}
-        className="card-img-top rounded-4 mb-3 position-relative"
+        alt="Ganador"
+        className="rounded-3 mb-3 position-relative"
         style={{
           height: "200px",
           objectFit: "cover",
-          border: "1px solid rgba(255,255,255,0.08)",
+          border: "1px solid rgba(255,255,255,0.1)",
           zIndex: 1,
         }}
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
       />
-
-      <motion.p
-        className="fw-bold mb-0 position-relative"
+      <h6
+        className="fw-semibold mb-3"
         style={{
-          fontSize: "1.1rem",
-          color: "#fbbc06",
-          textShadow: "0 0 10px #fbbc06",
-          letterSpacing: "1px",
-          zIndex: 2,
-        }}
-        animate={{
-          textShadow: [
-            "0 0 20px #ffd700",
-            "0 0 40px #ffd700",
-            "0 0 20px #ffd700",
-          ],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
-          type: "tween",
+          color: "#ffd700",
+          textShadow: "0 0 10px rgba(255,215,0,0.3)",
         }}
       >
-        <p className="text-danger fw-bold">
-          {payload?.ganador_msg?.trim()
-            ? payload.ganador_msg
-            : `¡${payload?.ganador ?? ''} ha ganado el combate...`}
-        </p>
-      </motion.p>
-    </motion.div>
+        {payload?.ganador_msg?.trim()
+          ? payload.ganador_msg
+          : `¡${payload?.ganador ?? ""} ha ganado el combate!`}
+      </h6>
+
+      <div style={{ fontSize: "0.95rem", lineHeight: "1.6", zIndex: 1 }}>
+        {payload?.oro_base && (
+          <p className="mb-0 text-warning">
+            Oro por victoria: +{payload.oro_base}
+          </p>
+        )}
+        {payload?.oro_robado && (
+          <p className="mb-0 text-warning">
+            Oro robado: +{payload.oro_robado}
+          </p>
+        )}
+        {payload?.recompensas?.hab_ganador && (
+          <p className="mb-0 text-light">
+            Puntos de habilidad: +{payload.recompensas.hab_ganador}
+          </p>
+        )}
+        {payload?.recompensas?.exp_ganador && (
+          <p className="mb-0 text-light">
+            Experiencia: +{payload.recompensas.exp_ganador}
+          </p>
+        )}
+      </div>
+    </div>
   </motion.div>
 </motion.div>
+
 
 
       </div>

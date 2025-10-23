@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Optional
 
@@ -26,3 +26,10 @@ class ZonasOutput(ZonasBase):
 
     class Config:
         orm_mode = True
+
+class ZonaNameOutput(BaseModel):
+    zon_name: str = Field(..., alias="zona_name")
+    class Config:
+        #orm_mode = True
+        from_attributes=True
+        populate_by_name  = True

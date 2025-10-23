@@ -58,7 +58,7 @@ export default function StepSigno({ signos, boosts, selectedDivZo, setSelectedDi
               className="mt-4 text-center epic-description p-3 rounded shadow-lg mx-auto"
               style={{  background: "#10121aa1", borderRadius: "30px" }}
             >
-                <h4 className="text-gold" style={{fontWeight:"bold", textTransform:"uppercase"}}>{selectedDivZo.zo_name}</h4>
+                <h4 className="text-gold" style={{fontWeight:"bold", textTransform:"uppercase"}}>{selectedDivZo.zo_name}</h4><br/>
               {selectedDivZo.zo_description}
               <div>
                 {

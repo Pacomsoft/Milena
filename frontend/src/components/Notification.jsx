@@ -23,6 +23,18 @@ export const notify = (type, message, options = {}) => {
       });
       break;
 
+      case "error-center":
+      toast.warn(message, {
+        position: "top-center",
+        autoClose: false,
+        closeOnClick: true,
+        theme:'dark',
+        bodyClassName: "text-toast toast-large",
+
+        ...options,
+      });
+      break;
+
     case "info":
       toast.info(message, {
         position: "top-right",

@@ -46,6 +46,9 @@ PERSISTENCIA_BASE = 0.75
 CRITICO_BASE = 1.5
 CRITICO_MAX = 2.0
 RONDAS_BATALLA = 25
+ORO_BASE_WIN = 5
+
+
 # ===============================
 
 # ===============================

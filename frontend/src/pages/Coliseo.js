@@ -7,10 +7,12 @@ import { motion } from "framer-motion";
 import { buscarContrincantes, simularCombate } from "../services/combate";
 import { notify } from "../components/Notification";
 import { FRONT_URL } from "../config";
+import inicio from "../assets/images/batalla/caballero_batalla.png";
+
 
 const Coliseo = () => {
   const navigate = useNavigate();
-  const {caballero} = useContext(AuthContext);
+  const {caballero, setCaballero } = useContext(AuthContext);
 
   const [nombre, setNombre] = useState("");
   const [nivel, setNivel] = useState("");
@@ -32,8 +34,8 @@ const Coliseo = () => {
     setLoading(true);
     try {
       const data = await buscarContrincantes({nombre, nivel, signo, deidad, zona, account, nivel_act});
-      setResultados(data);
-      setIdContrincante(data.id);
+      setResultados(data); // data puede ser objeto o null
+      setIdContrincante(data?.id ?? null);
       setBusquedaHecha(true);
     } catch (err) {
       notify("error", "Error al buscar contrincantes: "+err);      
@@ -71,10 +73,17 @@ const iniciarCombate = async (id_contrincante) => {
   try {
     console.log(payload);
     const data = await simularCombate(payload);
-    setIdBatalla(data.id);
+    if(data.id === undefined){
+      notify("error-center", data.error);
+    }else{
+      setIdBatalla(data.id);
+      console.log(data);  
+      setCaballero(data.caballero);
+      // abrir la ventana de batalla
+      window.open(FRONT_URL+`/Batalla?id=${data.id}`, "_blank");
+    }
+  
 
-    // abrir la ventana de batalla
-    window.open(FRONT_URL+`/Batalla?id=${data.id}`, "_blank");
     setNombre("");
     setNivel("");
     setSigno("");
@@ -156,7 +165,7 @@ const iniciarCombate = async (id_contrincante) => {
               más ardiente.”
             </p>
             <motion.p
-              className="text-gold fw-bold"
+              className="text-gold"
               animate={{ opacity: [0.3, 1, 0.3] }}
               transition={{ duration: 4, repeat: Infinity }}
             >
@@ -205,7 +214,7 @@ const iniciarCombate = async (id_contrincante) => {
                   <option value="Leo">Leo</option>
                   <option value="Virgo">Virgo</option>
                   <option value="Libra">Libra</option>
-                  <option value="Escorpio">Escorpio</option>
+                  <option value="Escorpión">Escorpio</option>
                   <option value="Sagitario">Sagitario</option>
                   <option value="Capricornio">Capricornio</option>
                   <option value="Acuario">Acuario</option>
@@ -243,76 +252,89 @@ const iniciarCombate = async (id_contrincante) => {
           )}
 
           {/* === RESULTADOS === */}
-          {busquedaHecha && !idBatalla && (
-            <motion.div
-              className="resultados mt-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              {loading ? (
-                <p className="text-center text-light">Buscando contrincantes...</p>
-              ) : resultados.length > 0 ? (
-                <div className="row">
-                  {resultados.map((pj, i) => (
-                    <motion.div
-                      key={pj.id || i}
-                      className="col-12 mb-3"
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                    >
-                      <div className="card bg-dark border-gold p-3 text-center">
-                        <div className="row">
-                          <div className="col-lg-12">
-                            <img src="/static/media/caballero_batalla.2e3f4fa5167e106ebf7e.png" alt="PJ2" className="card-img-top rounded-4 mb-3" style={{objectFit: 'cover', height: '200px', opacity: '1', transform: 'none'}}></img>
-                          </div>                        
-                          <div className="col-lg-12">
-                            <h5 className="text-gold mb-1">{pj.nombre}</h5>
-                          </div>  
+            {busquedaHecha && !idBatalla && (
+              <motion.div
+                className="resultados mt-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                {loading ? (
+                  <p className="text-center text-light">Buscando contrincantes...</p>
+                ) : resultados ? ( // ✅ ya no usamos .length
+                  <motion.div
+                    key={resultados.id}
+                    className="col-12 mb-3"
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <div className="card bg-dark border-gold p-3 text-center">
+                      <div className="row">
+                        <div className="col-lg-12">
+                          <img
+                            src={resultados.imagen_principal || inicio}
+                            alt="PJ2"
+                            className="card-img-top rounded-4 mb-3"
+                            style={{
+                              objectFit: "cover",
+                              height: "200px",
+                            }}
+                          />
                         </div>
-                        <div className="row">
-                          <div className="col-lg-4" style={{color:'white'}}><b>Nivel:</b> {pj.nivel}</div>
-                          <div className="col-lg-4" style={{color:'white'}}><b>Signo:</b>{" "} {pj.signo_name || "?"}</div>
-                          <div className="col-lg-4" style={{color:'white'}}><b>Deidad:</b>{" "} {pj.divinidad_name || "?"}</div>
+                        <div className="col-lg-12">
+                          <h5 className="text-gold mb-1">{resultados.nombre}</h5>
                         </div>
-                    
-                        <motion.button
-                          className="btn btn-sm btn-outline-warning mt-2"
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => handlePelear(pj.id)} // 👈 pasamos el ID
-                        >
-                          ⚔️ Desafiar
-                        </motion.button>
                       </div>
-                    </motion.div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-center" style={{fontWeight:'bold', color:'rgb(255 204 7)', fontSize:'1.3rem'}}>
-                  No se encontraron contrincantes...
-                </p>
-              )}
 
-              <div className="text-center mt-4">
-                <motion.button
-                  className="btn btn-primary"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleVolver}
-                >
-                 Volver a buscar
-                </motion.button>
-              </div>
-            </motion.div>
-          )}
+                      <div className="row">
+                        <div className="col-lg-4 text-white">
+                          <b>Nivel:</b> {resultados.nivel}
+                        </div>
+                        <div className="col-lg-4 text-white">
+                          <b>Signo:</b> {resultados.signo_name || "?"}
+                        </div>
+                        <div className="col-lg-4 text-white">
+                          <b>Deidad:</b> {resultados.divinidad_name || "?"}
+                        </div>
+                      </div>
+
+                      <motion.button
+                        className="btn btn-sm btn-warning mt-3"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => handlePelear(resultados.id)}
+                      >
+                         Desafiar
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <p className="text-center text-warning fw-bold" style={{ fontSize: "1.3rem" }}>
+                     No se encontraron contrincantes disponibles
+                  </p>
+                )}
+
+                <div className="text-center mt-4">
+                  <motion.button
+                    className="btn btn-primary"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleVolver}
+                  >
+                    Volver a buscar
+                  </motion.button>
+                </div>
+              </motion.div>
+            )}
+
+
           {idBatalla && (
             <motion.div
               className="resultado-batalla text-center mt-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <h4 className="text-gold mb-3">⚔️ ¡Batalla iniciada!</h4>
+              <h4 className="text-gold mb-3"> ¡Batalla iniciada!</h4>
               <p className="text-light">
                 Tu duelo ha comenzado en el Coliseo Sagrado.  
                 Puedes verla nuevamente o regresar a tu caballero.
@@ -329,7 +351,7 @@ const iniciarCombate = async (id_contrincante) => {
                 </motion.button>
 
                 <motion.button
-                  className="btn btn-outline-light fw-bold"
+                  className="btn btn-light fw-bold"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => navigate("/Caballero")}

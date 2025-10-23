@@ -694,3 +694,10 @@ h3{
     width: 90%; /* 👈 En pantallas pequeñas, ocupa todo el ancho */
   }
 }
+
+
+.toast-large{
+  font-family: 'Reddit';
+  font-size: 1.25rem;
+  text-align: center;
+}

@@ -25,3 +25,10 @@ class DivinidadOut(DivinidadBase):
 
     class Config:
         orm_mode = True
+
+class DivinidadNameOutput(BaseModel):
+    di_name: str = Field(..., alias="divinidad_name")
+    class Config:
+        #orm_mode = True
+        from_attributes=True
+        populate_by_name  = True

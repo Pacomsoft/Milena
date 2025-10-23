@@ -274,11 +274,67 @@ def init_data(db: Session):
         db.add_all(boosts)
         db.commit()
 
-    if db.query(models.Boost).count()==0:
-        boosts=[
-                    
+    if db.query(models.Estados).count()==0:
+        estados=[
+               models.Estados(es_name="Listo", es_description="¡Tu caballero está listo para la acción!", es_type="Ready", es_default_time=0, es_premium_time=0, es_last_updated_date= datetime.utcnow()),
+               models.Estados(es_name="Descansando de la batalla", es_description="Tu caballero tuvo una fuerte batalla y se encuentra recargando energías.", es_type="Battle", es_default_time=10, es_premium_time=5, es_last_updated_date= datetime.utcnow()),  
+               models.Estados(es_name="Descansando de la defensa", es_description="El caballero enfrentó una defensa con valentía y se encuentra recargando energías.", es_type="Battle", es_default_time=30, es_premium_time=60, es_last_updated_date= datetime.utcnow()), 
+               models.Estados(es_name="Descansando de la misión", es_description="Tu acaballero realizó una misión muy demandante y se encuentra recargando energías.", es_type="Quest", es_default_time=30, es_premium_time=20, es_last_updated_date= datetime.utcnow()),
+               models.Estados(es_name="Viajando", es_description="¡Tu caballero se encuentra viajando a otra ciudad!", es_type="Travel", es_default_time=10, es_premium_time=5, es_last_updated_date= datetime.utcnow()),
+               models.Estados(es_name="Meditando", es_description="¡Tu caballero se encuentra meditando para incrementar su cosmos!", es_type="Meditating", es_default_time=10, es_premium_time=10, es_last_updated_date= datetime.utcnow()),
+               models.Estados(es_name="Concentrando Séptimo Sentido", es_description="¡Tu caballero se encuentra concentrando su séptimo sentido para incrementar su poder!", es_type="Ascending", es_default_time=10, es_premium_time=10, es_last_updated_date= datetime.utcnow())               
             ]
-        db.add_all(boosts)
+        db.add_all(estados)
+        db.commit()
+
+    if db.query(models.RewardHeader).count()==0:
+        reward_header_pelea = models.RewardHeader(
+        re_name="Recompensa Base - Pelea",
+        re_type="Pelea",
+        re_formula="(base_value * nivel) * (1 + premium_bonus)",
+        re_description="Recompensa estándar por ganar una pelea. Incluye oro, experiencia y posibilidad de drop de ítem.",
+        re_active=True,
+        re_created_date=datetime.utcnow()
+    )
+        db.add(reward_header_pelea)
+        db.commit()  # Necesario para obtener el ID (re_key)
+
+        # === 2. DETALLES ===
+        reward_details_pelea = [
+            models.RewardDetail(
+                rd_re_key=reward_header_pelea.re_key,
+                rd_type="ca_gold",
+                rd_base_value=5,               # 5 oro base
+                rd_multiplier_per_level=5,      # +10 oro por nivel
+                rd_probability=1.0               # Siempre
+            ),
+            models.RewardDetail(
+                rd_re_key=reward_header_pelea.re_key,
+                rd_type="ca_experience",
+                rd_base_value=1,                # 15 exp base
+                rd_multiplier_per_level=2,     # +2.5 exp por nivel
+                rd_probability=1.0               # Siempre
+            ),
+            models.RewardDetail(
+                rd_re_key=reward_header_pelea.re_key,
+                rd_type="item",
+                rd_ref_id=None,                  # Puede ser genérico o un drop común
+                rd_base_value=1,
+                rd_probability=0.05,             # 5% probabilidad de ítem
+                rd_min_value=1,
+                rd_max_value=1
+            )
+        ]
+        db.add_all(reward_details_pelea)
+        db.commit()
+
+        # === 3. ASOCIACIÓN (SOURCE) ===
+        reward_source_pelea = models.RewardSource(
+            rs_source_type="Pelea",
+            rs_source_ref=None,  # No aplica, es tipo general
+            rs_re_key=reward_header_pelea.re_key
+        )
+        db.add(reward_source_pelea)
         db.commit()
 
 if __name__ == "__main__":

@@ -61,7 +61,7 @@ export default function StepDeidad({ divinidades, boosts,selectedDiv, setSelecte
               className="mt-4 text-center epic-description p-3 rounded shadow-lg mx-auto"
               style={{ color: "#ffffff", background: "#10121aa1", borderRadius: "30px" }}
             >
-              <h4 className="text-gold" style={{fontWeight:"bold", textTransform:"uppercase"}}>{selectedDiv.di_name}</h4>
+              <h4 className="text-gold" style={{fontWeight:"bold", textTransform:"uppercase"}}>{selectedDiv.di_name}</h4><br/>
               {selectedDiv.di_description}<br/>
               <div>
                 {

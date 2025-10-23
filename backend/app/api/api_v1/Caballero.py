@@ -27,7 +27,7 @@ def get_caballero(account_id: int, db: Session = Depends(get_db), current_user:d
     # si quieres devolver solo el primero
     return caballeros[0]
 
-@router.post("/buscar_contrincante", response_model=list[CaballeroSchema.CaballeroContrincante])
+@router.post("/buscar_contrincante", response_model=Optional[CaballeroSchema.CaballeroContrincante])
 def buscar_contrincante(
     filtros: CaballeroSchema.BuscarContrincanteIn,
     db: Session = Depends(get_db),
@@ -44,8 +44,10 @@ def buscar_contrincante(
         nivel_act=filtros.nivel_act
     )
 
+    print("caballeros:", caballeros)
+
     if not caballeros:
-        return []
+        return None
 
     return caballeros
 

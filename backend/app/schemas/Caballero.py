@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field,  model_validator, validator
 from datetime import datetime
 from typing import Optional
+from app.schemas import Zodiaco, Zonas, Divinidad
 
 class CaballeroBase(BaseModel):
     ca_name: str = Field(..., alias="nombre")
@@ -34,19 +35,22 @@ class CaballeroBase(BaseModel):
     ca_win: int = Field(0, alias="victorias")
     ca_loss: int = Field(0, alias="derrotas")
     #Preferencias de combate
-    ca_msg_win: str = Field(None, alias="mensaje_victoria")
-    ca_msg_loss:str =  Field(None, alias="mensaje_derrota")
-    ca_img_main:str = Field(None, alias="imagen_principal")
-    ca_img_win:str = Field(None, alias="imagen_victoria")
-    ca_img_loss:str = Field(None, alias="imagen_derrota") 
+    ca_msg_win: Optional[str] = Field(..., alias="mensaje_victoria")
+    ca_msg_loss:Optional[str] =  Field(..., alias="mensaje_derrota")
+    ca_img_main:Optional[str] = Field(..., alias="imagen_principal")
+    ca_img_win:Optional[str] = Field(..., alias="imagen_victoria")
+    ca_img_loss:Optional[str] = Field(..., alias="imagen_derrota") 
 
     # zona y estado
     ca_zon_key_act: int = Field(1, alias="zona_actual")
     ca_status: str = Field("Ready", alias="estado")
     ca_comments: Optional[str] = Field(None, alias="comentarios")
-    zon_name: Optional[str] = Field(None, alias="zona")
-    zo_name: Optional[str] = Field(None, alias="signo_name")
-    di_name: Optional[str] = Field(None, alias="divinidad_name")
+    # zon_name: Optional[str] = Field(None, alias="zona.zon_name")
+    # zo_name: Optional[str] = Field(None, alias="signo.zo_name")
+    # di_name: Optional[str] = Field(None, alias="divinidad.di_name")
+    divinidad: Optional[Divinidad.DivinidadNameOutput] = Field(None, alias="divinidad_name")
+    signo: Optional[Zodiaco.ZodiacoNameOutput] = Field(None, alias="signo_name")
+    zona: Optional[Zonas.ZonaNameOutput] = Field(None, alias="zona_name")
 
 class CaballeroUpdate(BaseModel): 
     ca_velocity: Optional[int] = None 
@@ -144,7 +148,7 @@ class CaballeroContrincante(BaseModel):
     septimo_sentido: int
     signo_name: str
     divinidad_name: str
-    imagen_principal:str
+    imagen_principal:Optional[str]
 
 class BuscarContrincanteIn(BaseModel):
     nombre: Optional[str] = None

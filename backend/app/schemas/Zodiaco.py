@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import date, datetime
 from typing import Optional
 
@@ -15,3 +15,9 @@ class ZodiacoOutput(ZodiacoBase):
     class Config:
         orm_mode = True
         
+class ZodiacoNameOutput(BaseModel):
+    zo_name: str = Field(..., alias="signo_name")
+    class Config:
+        #orm_mode = True
+        from_attributes=True
+        populate_by_name  = True

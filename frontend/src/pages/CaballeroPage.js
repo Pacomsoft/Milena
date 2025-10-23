@@ -93,7 +93,8 @@ return (
       <div className="stats-div">
         {[
           ["Nombre", caballero.nombre],
-          ["Signo", caballero.id_zona],
+          ["Divinidad", caballero.divinidad_name.divinidad_name],
+          ["Signo", caballero.signo_name.signo_name],
           ["Nivel", caballero.nivel],
           ["Estado", caballero.estado],
           ["Vida", `${caballero.salud_actual}/${caballero.salud}`],

@@ -46,9 +46,10 @@ export async function buscarContrincantes({ nombre, nivel, signo, deidad, zona, 
 
   if (!res.ok) {
     notify("error", `Error al buscar contrincantes: HTTP ${res.status}`);
-    return [];
+    return null;
   }
 
-  const data = await res.json();
-  return Array.isArray(data) ? data : [];
+const data = await res.json();
+return data ?? null;
 }
+

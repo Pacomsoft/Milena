@@ -1,4 +1,5 @@
 from datetime import datetime
+from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, BigInteger, DateTime, Boolean, ForeignKey, Text
 from ..db import Base  # Base declarativa desde db.py
 
@@ -66,4 +67,8 @@ class Caballero(Base):
     ca_status_player = Column(Boolean, nullable=False, default=True) #Status del jugador, activo o inactivo.
     ca_comments = Column(Text, nullable=True) #Comentarios
 
+    # 🔥 relaciones
+    signo = relationship("Zodiaco", backref="caballeros")
+    divinidad = relationship("Divinidad", backref="caballeros")
+    zona = relationship("Zona", backref="caballeros")
 
